@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="framework">
+</Property><Property Name="Solution File" Value="C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.suo">
+</Property><Property Name="Date" Value="Sunday, 24 August 2014">
+</Property><Property Name="Time" Value="22:15 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="framework.sln" Description="File successfully backed up as C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="framework.suo" Description="File successfully backed up as C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.suo.old">
+</Event><Event ErrorLevel="0" Project="framework" Source="framework.vcproj" Description="Converting project file 'C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.vcproj'.">
+</Event><Event ErrorLevel="1" Project="framework" Source="framework.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="framework" Source="framework.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="framework" Source="framework.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="0" Project="framework" Source="framework.vcproj" Description="Done converting to new project file 'C:\Users\Admin\Desktop\Workshop4_BobcatRampage!\framework.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="framework" Source="framework.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="framework.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="framework.sln" Description="Converted">
+</Event></UpgradeLog>
