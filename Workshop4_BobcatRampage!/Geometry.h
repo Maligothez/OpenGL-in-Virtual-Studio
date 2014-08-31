@@ -53,8 +53,8 @@ private:
 
 	GLuint m_material;
 	string m_materialFile;
-	vector m_textureIndices;
-	vector m_textureCoordinates;
+	vector<int> m_textureIndices;
+	vector<Vertex3> m_textureCoordinates;
 	
 
 	
@@ -325,8 +325,8 @@ public:
 		{
 			if (m_material!=NULL)
 		{
-			glTexCoord2f(m_textureCoordinates[m_textureIndices[count]].x(),
-				m_textureCoordinates[m_textureIndices[count]].y());
+			glTexCoord2f(m_textureCoordinates[m_textureIndices[i]].x(),
+				m_textureCoordinates[m_textureIndices[i]].y());
 			}
 
 			glVertex3fv(m_vertexCoordinates[i]);
@@ -342,8 +342,10 @@ public:
 		}
 
 		glPopMatrix();
-
-		glDisable(GL_TEXTURE_2D);
+		if (!m_materialFile.empty())
+          {
+               glDisable(GL_TEXTURE_2D);
+          }
 	}
 
 	void createOpenGLVertexBufferObject()

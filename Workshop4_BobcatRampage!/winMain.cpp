@@ -154,7 +154,108 @@ void generateMap(vector<Geometry> &worldThings)
 
 }
 
+void generateSkyBox(vector<Geometry> &sky)  {
 
+
+	int left = -0.5;
+	int right = 0.5;
+	int bottom = -0.5;
+	int top = 0.5;
+	int front = 0.5;
+	int back = -0.5;
+	
+	//front1
+	glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, bottom, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, front);
+		glEnd();
+		//front2
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, front);
+		glEnd();
+
+		//back1
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, bottom, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, back);
+		glEnd();
+		//back2
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, back);
+		//left1
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, bottom, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, bottom, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, back);
+		glEnd();
+		//left2
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, bottom, front);
+		glEnd();
+		//right1
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, back);
+		glEnd();
+		//right2
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, bottom, front);
+		glEnd();
+		//top1
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, front);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, back);
+		glEnd();
+		//top2
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(right, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, back);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(left, top, front);
+		glEnd();
+	
+}
 
 /* 
 WinMain function.  This is where the program starts from the programmers point of view.
@@ -217,6 +318,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 	vector<Geometry> worldThings;
 	generateMap(worldThings);
+	vector<Geometry> sky;
 
 	double fps;
 	GameTimerHighPerformance performanceCounter;
