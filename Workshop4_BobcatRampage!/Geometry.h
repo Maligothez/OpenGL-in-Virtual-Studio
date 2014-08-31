@@ -2,6 +2,7 @@
 //
 // Created: August 2009
 
+
 #pragma once
 #ifndef Geometry_OBJECT
 #define Geometry_OBJECT
@@ -19,6 +20,7 @@
 #include "ASELoader.h"
 #include "Vertex3.h"
 #include "Vector3.h"
+#include "TextureCreator.h"
 
 using namespace std;
 
@@ -49,7 +51,18 @@ private:
 	GLuint mBufferVertList;
 	int mNumberOfVertices;
 
+	GLuint m_material;
+	string m_materialFile;
+	vector m_textureIndices;
+	vector m_textureCoordinates;
+	
+
+	
+
+
 public:
+
+	
 	
     Geometry() // constructor
 	{
@@ -79,6 +92,7 @@ public:
 		//createOpenGLVertexBufferObject();
 
 		computeBoundingSphere(Vector3f(0,0,0));
+
 	}
 
 	~Geometry() // destructor
@@ -263,17 +277,34 @@ public:
 		computeBoundingSphere(Vector3f(0,0,0));
 	}
 
-	void setGeometry(vector<Vertex3>& vertices, vector<int>& triangles)
+	void setGeometry(vector<Vertex3>& vertices, vector<int>&
+		triangles, vector<Vertex3> &textureCoordinates, vector<int>
+		&textureIndices)
 	{
 		m_vertexCoordinates = vertices;
 		m_triangleIndices = triangles;
+		m_textureCoordinates = textureCoordinates;
+		m_textureIndices = textureIndices;
 		computeBoundingSphere(Vector3f(0,0,0));
 	}
 
 	void drawOpenGLImmediate()
 	{
+
+
+		if (!m_materialFile.empty())
+		{
+			if (!glIsTexture(m_material))
+			{
+				m_material = TextureCreator::loadTexture(m_materialFile);
+			}
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture (GL_TEXTURE_2D, m_material);
+		}
 		glPushMatrix();
+
 		
+
 		// model to parent transform
 		glTranslatef(m_relativePosition.x(), m_relativePosition.y(), m_relativePosition.z()); // translation
 
@@ -292,6 +323,12 @@ public:
 
 		for each (int i in m_triangleIndices)
 		{
+			if (m_material!=NULL)
+		{
+			glTexCoord2f(m_textureCoordinates[m_textureIndices[count]].x(),
+				m_textureCoordinates[m_textureIndices[count]].y());
+			}
+
 			glVertex3fv(m_vertexCoordinates[i]);
 		}
 
@@ -305,6 +342,8 @@ public:
 		}
 
 		glPopMatrix();
+
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	void createOpenGLVertexBufferObject()
@@ -396,5 +435,10 @@ public:
 		glPopMatrix();
 	}
 };
+
+ static void setTextureFile () {
+
+	 GLuint m_textureObject = TextureCreator::loadTexture("fileName.jpg");
+ }
 
 #endif
