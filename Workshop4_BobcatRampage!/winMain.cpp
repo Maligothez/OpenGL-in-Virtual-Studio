@@ -164,96 +164,135 @@ void generateSkyBox(vector<Geometry> &sky)  {
 	int front = 0.5;
 	int back = -0.5;
 	
-	//front1
-	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glEnd();
-		//front2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glEnd();
+	vector<Vertex3> vertexCoordinates; // a list of all the vertices in the model
+	// triangle indices
+	vector<int> triangleIndices; // list storing the order that vertices are drawn
 
-		//back1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glEnd();
-		//back2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		//left1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glEnd();
-		//left2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glEnd();
-		//right1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glEnd();
-		//right2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glEnd();
-		//top1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glEnd();
-		//top2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glEnd();
+	// modelToWorldTranform matrix; // To be done
+	Vector3f relativeOrientation; // angle relative to parent (x,y,z angles)
+	Vector3f relativePosition; // pos
+
+	Vertex3 vertexObject; 
+ 
+	int p[] = {1, 2, 3, 4, 5}; 
+	vector<int> faceIndices(p, p+5); 
+	vector<int> textureIndices(p, p+5); 
+
+	
+	Geometry skyBoxFront;  
+	skyBoxFront.setName((string)"front");  
+	vector<Vertex3> frontFaceVertexes; 
+	vector<Vertex3> frontFaceTextureVertexes; 
+	//front1 
+	vertexObject.set(left, bottom, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+	//front2 
+	vertexObject.set(left, top, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, front); 
+	frontFaceVertexes.push_back(vertexObject); 
+
+	skyBoxFront.setTextureFile("skyboxN.bmp"); 
+	//skyBoxTop.setPosition(stuff??) 
+ 
+	sky.push_back(skyBoxFront);
+	
+	Geometry skyBoxBack;
+	skyBoxBack.setName((string)"back");  
+	vector<Vertex3> backFaceVertexes; 
+	vector<Vertex3> backFaceTextureVertexes; 
+	//front1 
+	vertexObject.set(left, bottom, back); 
+	backFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, back); 
+	backFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, back); 
+	backFaceVertexes.push_back(vertexObject); 
+	//front2 
+	vertexObject.set(left, top, back); 
+	backFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	backFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, back); 
+	backFaceVertexes.push_back(vertexObject); 
+
+	skyBoxBack.setTextureFile("skybox.bmpS"); 
+	//skyBoxBack.setPosition(stuff??) 
+ 
+	sky.push_back(skyBoxBack);
+	
+	Geometry skyBoxTop;
+	skyBoxTop.setName((string)"top");  
+	vector<Vertex3> topFaceVertexes; 
+	vector<Vertex3> topFaceTextureVertexes; 
+	//front1 
+	vertexObject.set(left, top, back); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, back); 
+	topFaceVertexes.push_back(vertexObject); 
+	//front2 
+	vertexObject.set(left, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, back); 
+	topFaceVertexes.push_back(vertexObject); 
+
+	skyBoxTop.setTextureFile("skyboxT.bmp"); 
+	//skyBoxTop.setPosition(stuff??) 
+	
+	Geometry skyBoxLeft;
+	skyBoxLeft.setName((string)"left");  
+	vector<Vertex3> leftFaceVertexes; 
+	vector<Vertex3> leftFaceTextureVertexes; 
+	//front1 
+	vertexObject.set(left, bottom, back); 
+	leftFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, front); 
+	leftFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, back); 
+	leftFaceVertexes.push_back(vertexObject); 
+	//front2 
+	vertexObject.set(left, bottom, front); 
+	leftFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, front); 
+	leftFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, bottom, back); 
+	leftFaceVertexes.push_back(vertexObject); 
+
+	skyBoxLeft.setTextureFile("skyboxW.bmp"); 
+	//skyBoxLeft.setPosition(stuff??) 
+	
+	Geometry skyBoxRight;
+	skyBoxRight.setName((string)"right");  
+	vector<Vertex3> rightFaceVertexes; 
+	vector<Vertex3> rightFaceTextureVertexes; 
+	//front1 
+	vertexObject.set(right, bottom, back); 
+	rightFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	rightFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, front); 
+	rightFaceVertexes.push_back(vertexObject); 
+	//front2 
+	vertexObject.set(right, top, back); 
+	rightFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	rightFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, bottom, back); 
+	rightFaceVertexes.push_back(vertexObject); 
+
+	skyBoxRight.setTextureFile("skyboxE.bmp"); 
+	//skyBoxRight.setPosition(stuff??) 
+	
 	
 }
 

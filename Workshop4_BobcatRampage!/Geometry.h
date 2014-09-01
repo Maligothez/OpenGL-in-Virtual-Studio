@@ -393,6 +393,8 @@ public:
 		// jump forward by numberOfVertices*3 (because each vertex has 3 components)
 		glColorPointer(3, GL_FLOAT, 24,(float *)NULL + 3);
 	}
+
+
 	
 	void drawOpenGLVertexBufferObject()
 	{
@@ -436,11 +438,16 @@ public:
 
 		glPopMatrix();
 	}
+
+	 void setTextureFile (string fileName) {
+
+	 m_materialFile = fileName;
+	 m_material = TextureCreator::loadTexture(fileName);
+	
+ }
+
 };
 
- static void setTextureFile () {
-
-	 GLuint m_textureObject = TextureCreator::loadTexture("fileName.jpg");
- }
+ 
 
 #endif

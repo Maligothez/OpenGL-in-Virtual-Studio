@@ -294,10 +294,27 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 
 	// This will give us a 3rd person fixed camera:
 	// set up camera coordinates and point the camera at (0,0,0)
+
+	glRotatef(-angleAroundY,0,1,0);
+	// enable texture mapping
+	glEnable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glScalef(100,100,100);
+	for(vector<Geometry>::iterator skyGeometry = sky.begin();
+		skyGeometry<sky.end(); skyGeometry++)
+	{
+		skyGeometry->drawOpenGLImmediate();
+	}
+	glPopMatrix();
+	glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
+
+	// enable texture mapping
+	glDisable(GL_TEXTURE_2D);
+	glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
 	float cameraDistance = 80;
 	static float cameraHeight = 120;
 	float cameraAngle = (90-(180/3.1415927f)*atan(cameraDistance/cameraHeight));
-	
+
 
 	
 
