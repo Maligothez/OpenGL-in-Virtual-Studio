@@ -288,7 +288,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 
 	//glRotatef(-angleAroundY,0,1,0);
 	
-	//glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
+	
 
 	float cameraDistance = 80;
 	static float cameraHeight = 120;
@@ -321,10 +321,13 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 	// enable texture mapping
 	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
+	glTranslatef(ExcavatorX, -20, ExcavatorZ);
 	glScalef(planeSize,planeSize,planeSize);
+	
 	for(vector<Geometry>::iterator skyGeometry = sky.begin(); skyGeometry<sky.end(); skyGeometry++)
 	{
 		skyGeometry->drawOpenGLImmediate();
+		
 		glRotatef(90,0,1,0);
 	}
 	glPopMatrix();
