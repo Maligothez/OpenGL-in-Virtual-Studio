@@ -31,7 +31,7 @@ private:
 		&textureIndices);
 
 	static void readMesh(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textureCoordinates, vector<int>
-		&textureIndices, string FileName);
+		&textureIndices);
 
 	static void readVertexList(vector<Vertex3> &vertices);
 

@@ -205,6 +205,30 @@ void generateSkyBox(vector<Geometry> &sky)  {
 	sky.push_back(skyBoxFront);
 	skyBoxFront.setTextureFile("skyboxW.bmp"); 
 	sky.push_back(skyBoxFront);
+
+	Geometry skyBoxTop;  
+	vector<Vertex3> topFaceVertexes; 
+	vector<Vertex3> topFaceTextureVertexes; 
+	vertexObject.set(left, -1, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, -1, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+
+	//front2 
+	vertexObject.set(right, -1, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(left, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+	vertexObject.set(right, top, front); 
+	topFaceVertexes.push_back(vertexObject); 
+
+	skyBoxTop.setName((string)"top");  
+	skyBoxTop.setGeometry(topFaceVertexes, faceIndices, frontFaceTextureVertexes, textureIndices);
+	skyBoxTop.setColour(1,1,1);
+	skyBoxTop.setTextureFile("skyboxT.bmp"); 
+	sky.push_back(skyBoxTop);
 }
 
 /* 

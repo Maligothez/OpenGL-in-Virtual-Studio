@@ -36,7 +36,7 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vec
 			else if (currentLine.find("*GEOMOBJECT")!= string::npos) 
 			{
 				// read geometry...
-				readGeometry(vertices, triangles, textureCoordinates, textureIndices, fileName);
+				readGeometry(vertices, triangles, textureCoordinates, textureIndices);
 			}
 			else if (currentLine.find("*GROUP")!= string::npos)
 			{
@@ -85,7 +85,7 @@ void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles, 
 		if (currentLine.find("*MESH ")!= string::npos)
 		{
 			// read mesh data...
-			readMesh(vertices, triangles, textureCoordinates, textureIndices, FileName);
+			readMesh(vertices, triangles, textureCoordinates, textureIndices);
 		}
 		else
 		{

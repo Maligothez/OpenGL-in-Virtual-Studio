@@ -324,12 +324,13 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 	glTranslatef(ExcavatorX, -20, ExcavatorZ);
 	glScalef(planeSize,planeSize,planeSize);
 	
-	for(vector<Geometry>::iterator skyGeometry = sky.begin(); skyGeometry<sky.end(); skyGeometry++)
-	{
-		skyGeometry->drawOpenGLImmediate();
-		
+	for(int i=0; i < 4; i++){
+		sky[i].drawOpenGLImmediate();
 		glRotatef(90,0,1,0);
 	}
+	glRotatef(-180,0,1,0);
+	glRotatef(-90,1,0,0);
+	sky[4].drawOpenGLImmediate();
 	glPopMatrix();
 	glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
 
