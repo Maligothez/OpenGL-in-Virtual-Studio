@@ -97,120 +97,120 @@ void drawcube() {
 	int front = 0.5;
 	int back = -0.5;
 
-	
 
-		//front1
+
+	//front1
 	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glEnd();
-		//front2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glEnd();
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, front);
+	glEnd();
+	//front2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, front);
+	glEnd();
 
-		//back1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glEnd();
-		//back2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		//left1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glEnd();
-		//left2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glEnd();
-		//right1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glEnd();
-		//right2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glEnd();
-		//top1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glEnd();
-		//top2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, top, front);
-		glEnd();
-		//bottom1
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, front);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glEnd();
-		//bottom2
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(right, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, back);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(left, bottom, front);
-		glEnd();
+	//back1
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, back);
+	glEnd();
+	//back2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, back);
+	//left1
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, back);
+	glEnd();
+	//left2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, front);
+	glEnd();
+	//right1
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, back);
+	glEnd();
+	//right2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, front);
+	glEnd();
+	//top1
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, back);
+	glEnd();
+	//top2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, top, front);
+	glEnd();
+	//bottom1
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, front);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, back);
+	glEnd();
+	//bottom2
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(right, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, back);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(left, bottom, front);
+	glEnd();
 
-	
 
-	
+
+
 
 
 
@@ -244,7 +244,7 @@ GLvoid RendererOpenGL::glPrint(const char *fmt, ...)
 }
 
 
-void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  vector<Geometry> &things) // this does the drawing
+void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  vector<Geometry> &things, vector<Geometry> &sky) // this does the drawing
 {	
 	float ExcavatorX = bigExcavator.getLocationX();
 	float ExcavatorZ = bigExcavator.getLocationZ();
@@ -278,11 +278,6 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 		}
 	}
 
-
-	// enable texture mapping
-	glEnable(GL_TEXTURE_2D);
-
-
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); // clear buffers from last frame
 	glLoadIdentity(); // clear coordinate transformation - (0,0,0) is the screen centre
 
@@ -291,37 +286,22 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 	// perform the viewing transformation
 	// **********************************  
 
+	//glRotatef(-angleAroundY,0,1,0);
+	
+	//glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
 
-	// This will give us a 3rd person fixed camera:
-	// set up camera coordinates and point the camera at (0,0,0)
-
-	glRotatef(-angleAroundY,0,1,0);
-	// enable texture mapping
-	glEnable(GL_TEXTURE_2D);
-	glPushMatrix();
-	glScalef(100,100,100);
-	for(vector<Geometry>::iterator skyGeometry = sky.begin();
-		skyGeometry<sky.end(); skyGeometry++)
-	{
-		skyGeometry->drawOpenGLImmediate();
-	}
-	glPopMatrix();
-	glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
-
-	// enable texture mapping
-	glDisable(GL_TEXTURE_2D);
-	glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
 	float cameraDistance = 80;
 	static float cameraHeight = 120;
 	float cameraAngle = (90-(180/3.1415927f)*atan(cameraDistance/cameraHeight));
 
 
-	
+	// This will give us a 3rd person fixed camera:
+	// set up camera coordinates and point the camera at (0,0,0)
 
 	if(thirdPersonCamera)
 	{
-	glRotatef(cameraAngle,1,0,0);
-	glTranslatef(0,-cameraHeight,-cameraDistance);
+		glRotatef(cameraAngle,1,0,0);
+		glTranslatef(0,-cameraHeight,-cameraDistance);
 	}
 	else {
 		//glTranslatef(-10  ,0 , 0 );
@@ -336,13 +316,26 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 	// ************************
 	// end of viewing transform
 	// ************************
+	int planeSize = 100;
 
+	// enable texture mapping
+	glEnable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glScalef(planeSize,planeSize,planeSize);
+	for(vector<Geometry>::iterator skyGeometry = sky.begin(); skyGeometry<sky.end(); skyGeometry++)
+	{
+		skyGeometry->drawOpenGLImmediate();
+		glRotatef(90,0,1,0);
+	}
+	glPopMatrix();
+	glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
 
+	// enable texture mapping
+	glDisable(GL_TEXTURE_2D);
 
 	// draw the ground - this a triangle strip instead of a large
 	// quad - the more vertices the better the lighting will look
 	glColor3f(0,1,0);
-	int planeSize = 100;
 	glNormal3f(0,1,0);
 	for (int zCoord = -planeSize; zCoord<planeSize; zCoord++)
 	{
@@ -358,8 +351,8 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera,  ve
 	// draw the Geometrys
 	for each (Geometry currentThing in things)
 	{
-		//currentThing.drawOpenGLImmediate();
-		currentThing.drawOpenGLVertexBufferObject();
+		currentThing.drawOpenGLImmediate();
+		//currentThing.drawOpenGLVertexBufferObject();
 	}
 
 	SwapBuffers(hDC);

@@ -155,32 +155,19 @@ void generateMap(vector<Geometry> &worldThings)
 }
 
 void generateSkyBox(vector<Geometry> &sky)  {
-
-
-	int left = -0.5;
-	int right = 0.5;
-	int bottom = -0.5;
-	int top = 0.5;
-	int front = 0.5;
-	int back = -0.5;
-	
-	vector<Vertex3> vertexCoordinates; // a list of all the vertices in the model
-	// triangle indices
-	vector<int> triangleIndices; // list storing the order that vertices are drawn
-
-	// modelToWorldTranform matrix; // To be done
-	Vector3f relativeOrientation; // angle relative to parent (x,y,z angles)
-	Vector3f relativePosition; // pos
+	int left = -1;
+	int right = 1;
+	int bottom = 0;
+	int top = 1;
+	int front = 1;
+	int back = -1;
 
 	Vertex3 vertexObject; 
- 
-	int p[] = {1, 2, 3, 4, 5}; 
-	vector<int> faceIndices(p, p+5); 
-	vector<int> textureIndices(p, p+5); 
 
-	
-	Geometry skyBoxFront;  
-	skyBoxFront.setName((string)"front");  
+	int p[] = {0, 1, 2, 3, 4, 5}; 
+	vector<int> faceIndices(p, p+6); 
+	vector<int> textureIndices(p, p+6); 
+
 	vector<Vertex3> frontFaceVertexes; 
 	vector<Vertex3> frontFaceTextureVertexes; 
 	//front1 
@@ -190,110 +177,34 @@ void generateSkyBox(vector<Geometry> &sky)  {
 	frontFaceVertexes.push_back(vertexObject); 
 	vertexObject.set(left, top, front); 
 	frontFaceVertexes.push_back(vertexObject); 
+	frontFaceTextureVertexes.push_back(Vertex3(0,0,0));
+	frontFaceTextureVertexes.push_back(Vertex3(1,0,0));
+	frontFaceTextureVertexes.push_back(Vertex3(0,1,0));
+
 	//front2 
+	vertexObject.set(right, bottom, front); 
+	frontFaceVertexes.push_back(vertexObject); 
 	vertexObject.set(left, top, front); 
 	frontFaceVertexes.push_back(vertexObject); 
 	vertexObject.set(right, top, front); 
 	frontFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, bottom, front); 
-	frontFaceVertexes.push_back(vertexObject); 
+	frontFaceTextureVertexes.push_back(Vertex3(1,0,0));
+	frontFaceTextureVertexes.push_back(Vertex3(0,1,0));
+	frontFaceTextureVertexes.push_back(Vertex3(1,1,0));
 
+	Geometry skyBoxFront;  
+	skyBoxFront.setName((string)"front");  
+	skyBoxFront.setGeometry(frontFaceVertexes, faceIndices, frontFaceTextureVertexes, textureIndices);
+	skyBoxFront.setColour(1,1,1);
 	skyBoxFront.setTextureFile("skyboxN.bmp"); 
-	//skyBoxTop.setPosition(stuff??) 
- 
 	sky.push_back(skyBoxFront);
-	
-	Geometry skyBoxBack;
-	skyBoxBack.setName((string)"back");  
-	vector<Vertex3> backFaceVertexes; 
-	vector<Vertex3> backFaceTextureVertexes; 
-	//front1 
-	vertexObject.set(left, bottom, back); 
-	backFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, bottom, back); 
-	backFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, top, back); 
-	backFaceVertexes.push_back(vertexObject); 
-	//front2 
-	vertexObject.set(left, top, back); 
-	backFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, front); 
-	backFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, bottom, back); 
-	backFaceVertexes.push_back(vertexObject); 
 
-	skyBoxBack.setTextureFile("skybox.bmpS"); 
-	//skyBoxBack.setPosition(stuff??) 
- 
-	sky.push_back(skyBoxBack);
-	
-	Geometry skyBoxTop;
-	skyBoxTop.setName((string)"top");  
-	vector<Vertex3> topFaceVertexes; 
-	vector<Vertex3> topFaceTextureVertexes; 
-	//front1 
-	vertexObject.set(left, top, back); 
-	topFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, front); 
-	topFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, back); 
-	topFaceVertexes.push_back(vertexObject); 
-	//front2 
-	vertexObject.set(left, top, front); 
-	topFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, front); 
-	topFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, top, back); 
-	topFaceVertexes.push_back(vertexObject); 
-
-	skyBoxTop.setTextureFile("skyboxT.bmp"); 
-	//skyBoxTop.setPosition(stuff??) 
-	
-	Geometry skyBoxLeft;
-	skyBoxLeft.setName((string)"left");  
-	vector<Vertex3> leftFaceVertexes; 
-	vector<Vertex3> leftFaceTextureVertexes; 
-	//front1 
-	vertexObject.set(left, bottom, back); 
-	leftFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, top, front); 
-	leftFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, top, back); 
-	leftFaceVertexes.push_back(vertexObject); 
-	//front2 
-	vertexObject.set(left, bottom, front); 
-	leftFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, top, front); 
-	leftFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(left, bottom, back); 
-	leftFaceVertexes.push_back(vertexObject); 
-
-	skyBoxLeft.setTextureFile("skyboxW.bmp"); 
-	//skyBoxLeft.setPosition(stuff??) 
-	
-	Geometry skyBoxRight;
-	skyBoxRight.setName((string)"right");  
-	vector<Vertex3> rightFaceVertexes; 
-	vector<Vertex3> rightFaceTextureVertexes; 
-	//front1 
-	vertexObject.set(right, bottom, back); 
-	rightFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, front); 
-	rightFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, bottom, front); 
-	rightFaceVertexes.push_back(vertexObject); 
-	//front2 
-	vertexObject.set(right, top, back); 
-	rightFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, top, front); 
-	rightFaceVertexes.push_back(vertexObject); 
-	vertexObject.set(right, bottom, back); 
-	rightFaceVertexes.push_back(vertexObject); 
-
-	skyBoxRight.setTextureFile("skyboxE.bmp"); 
-	//skyBoxRight.setPosition(stuff??) 
-	
-	
+	skyBoxFront.setTextureFile("skyboxE.bmp"); 
+	sky.push_back(skyBoxFront);
+	skyBoxFront.setTextureFile("skyboxS.bmp"); 
+	sky.push_back(skyBoxFront);
+	skyBoxFront.setTextureFile("skyboxW.bmp"); 
+	sky.push_back(skyBoxFront);
 }
 
 /* 
@@ -349,6 +260,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 	// merely returns a pointer to the existing renderer.
 
 	renderer->initialise(); // initialise the renderer.
+	ilInit();
 
 	// L O A D   G A M E   M A P   A N D   O B J E C T S
 
@@ -357,7 +269,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 	vector<Geometry> worldThings;
 	generateMap(worldThings);
+
 	vector<Geometry> sky;
+	generateSkyBox(sky);
 
 	double fps;
 	GameTimerHighPerformance performanceCounter;
@@ -560,8 +474,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 			}
 		}
 
+
+
 		// render the world
-		renderer->Render(bigExcavator, thirdPersonCamera,   worldThings); // call the renderers 'Render' method (from the RendererOpenGL class)
+		renderer->Render(bigExcavator, thirdPersonCamera,   worldThings, sky); // call the renderers 'Render' method (from the RendererOpenGL class)
+		if (glGetError()!=GL_NO_ERROR)
+		{
+			MessageBox (NULL,"error detected","Error",MB_OK);
+		}
 	}
 
 	/* 

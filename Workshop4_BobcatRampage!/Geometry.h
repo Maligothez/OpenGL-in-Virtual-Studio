@@ -55,16 +55,16 @@ private:
 	string m_materialFile;
 	vector<int> m_textureIndices;
 	vector<Vertex3> m_textureCoordinates;
-	
 
-	
+
+
 
 
 public:
 
-	
-	
-    Geometry() // constructor
+
+
+	Geometry() // constructor
 	{
 		// clear the vectors
 		m_vertexCoordinates.clear();
@@ -74,7 +74,7 @@ public:
 		m_relativePosition.set(0,0,0);
 		m_colour.set(0,0,0);
 
-		
+
 		// create some example geometry
 		/*Vertex3 test(-1,0,0);
 		m_vertexCoordinates.push_back(test);
@@ -178,7 +178,7 @@ public:
 	{
 		return m_uniqueID;
 	}
-	
+
 	void setColour(float r, float g, float b)
 	{
 		m_colour.set(r,g,b);
@@ -252,8 +252,8 @@ public:
 			return false;
 		}
 	}
-	
-	
+
+
 	void update() // update the Geometry
 	{
 		// first update itself
@@ -269,7 +269,7 @@ public:
 
 	}
 
-	
+
 	void loadGeometry(string fileName)
 	{
 		// loads model geometry from disk
@@ -290,8 +290,7 @@ public:
 
 	void drawOpenGLImmediate()
 	{
-
-
+		glPushMatrix();
 		if (!m_materialFile.empty())
 		{
 			if (!glIsTexture(m_material))
@@ -301,9 +300,6 @@ public:
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture (GL_TEXTURE_2D, m_material);
 		}
-		glPushMatrix();
-
-		
 
 		// model to parent transform
 		glTranslatef(m_relativePosition.x(), m_relativePosition.y(), m_relativePosition.z()); // translation
@@ -318,15 +314,15 @@ public:
 		glColor3f(m_colour.x(), m_colour.y(), m_colour.z());
 
 		// draw this geometry
-		
+
 		glBegin(GL_TRIANGLES);
 
 		for each (int i in m_triangleIndices)
 		{
-			if (m_material!=NULL)
-		{
-			glTexCoord2f(m_textureCoordinates[m_textureIndices[i]].x(),
-				m_textureCoordinates[m_textureIndices[i]].y());
+			if (!m_materialFile.empty())
+			{
+				glTexCoord2f(m_textureCoordinates[m_textureIndices[i]].x(),
+					m_textureCoordinates[m_textureIndices[i]].y());
 			}
 
 			glVertex3fv(m_vertexCoordinates[i]);
@@ -343,9 +339,9 @@ public:
 
 		glPopMatrix();
 		if (!m_materialFile.empty())
-          {
-               glDisable(GL_TEXTURE_2D);
-          }
+		{
+			glDisable(GL_TEXTURE_2D);
+		}
 	}
 
 	void createOpenGLVertexBufferObject()
@@ -395,7 +391,7 @@ public:
 	}
 
 
-	
+
 	void drawOpenGLVertexBufferObject()
 	{
 		mNumberOfVertices = m_triangleIndices.size();
@@ -427,7 +423,7 @@ public:
 		// the colours begin after the vertices, so from the start of the buffer
 		// jump forward by numberOfVertices*3 (because each vertex has 3 components)
 		glColorPointer(3, GL_FLOAT, 24, (float *)NULL + 3);
-		
+
 		// draw all the vertices, connected up as triangles
 		glDrawArrays(GL_TRIANGLES, 0, mNumberOfVertices);
 		// now draw the kids
@@ -439,15 +435,13 @@ public:
 		glPopMatrix();
 	}
 
-	 void setTextureFile (string fileName) {
-
-	 m_materialFile = fileName;
-	 m_material = TextureCreator::loadTexture(fileName);
-	
- }
+	void setTextureFile (string fileName) {
+		m_materialFile = fileName;
+		m_material = TextureCreator::loadTexture(fileName);
+	}
 
 };
 
- 
+
 
 #endif
