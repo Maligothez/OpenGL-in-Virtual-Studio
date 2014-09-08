@@ -60,7 +60,7 @@ private:
 
 public:
 
-	
+
 
 	~Geometry()
 	{
@@ -324,19 +324,14 @@ public:
 	}
 
 	void rotateCoordinates() {
-
-
-		int currentIndex = 0;
-		for each (Vertex3 currentVertex in m_vertexCoordinates)   {
-			currentVertex.set(currentVertex.z(), currentVertex.y(), currentVertex.x());
-				
-			}
-
-		for each (Vertex3 currentTexture in m_textureCoordinates)
+		vector<Vertex3> tmp = m_vertexCoordinates;
+		m_vertexCoordinates.clear();
+		for each (Vertex3 currentVertex in tmp)   
 		{
-			currentTexture.set(currentTexture.z(), currentTexture.y(), currentTexture.x());
+			Vertex3 tmpVertex;
+			tmpVertex.set(-currentVertex.z(), currentVertex.y(), currentVertex.x());
+			m_vertexCoordinates.push_back(tmpVertex);
 		}
-
 	}
 
 	void drawOpenGLImmediate()
@@ -493,12 +488,12 @@ public:
 		// texture coordinates
 		if (!m_textureIndices.empty())
 		{
-		for each (Vertex3 currentTexture in m_textureCoordinates)
-		{
-			vertBuff[currentIndex] = currentTexture.x();
-			vertBuff[currentIndex+1] = currentTexture.y();
-			currentIndex += 2;
-		}
+			for each (Vertex3 currentTexture in m_textureCoordinates)
+			{
+				vertBuff[currentIndex] = currentTexture.x();
+				vertBuff[currentIndex+1] = currentTexture.y();
+				currentIndex += 2;
+			}
 		}
 
 		// unmap the bufffer
@@ -564,7 +559,7 @@ public:
 		glEnableClientState(GL_VERTEX_ARRAY);
 		// point to the vertex data
 		glVertexPointer(3,GL_FLOAT, 0, (float *)NULL);
-		
+
 		// same for textures
 		if (!m_textureIndices.empty())
 		{

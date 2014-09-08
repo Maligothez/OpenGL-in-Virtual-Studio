@@ -56,8 +56,6 @@ bool Excavator::checkCollisions(vector<Geometry> &things)
 	return true;
 }
 
-
-
 bool Excavator::processKeyboardInput()
 {	
 	bool gameWon = 0;
@@ -125,16 +123,28 @@ bool Excavator::processKeyboardInput()
 	locationX += currentSpeedX;
 	locationZ += currentSpeedZ;
 
-	if (locationX > 200 || locationX < -200 ) {
+	const int minX = -197.5;
+	const int maxX = 197.5;
+	const int minZ = -57.5;
+	const int maxZ = 57.5;
 
+	if (locationX > maxX){
 		currentSpeedX = -currentSpeedX;
+		locationX = maxX;
+	} 
+	else if (locationX < minX){
+		currentSpeedX = -currentSpeedX;
+		locationX = minX;
 	}
-
-	if (locationZ > 60 || locationZ < -60 ) {
-
+	if (locationZ > maxZ){
 		currentSpeedZ = -currentSpeedZ;
+		locationZ = maxZ;
+	} 
+	else if (locationZ < minZ){
+		currentSpeedZ = -currentSpeedZ;
+		locationZ = minZ;
 	}
-	
+
 	currentSpeedX *= friction;
 	currentSpeedZ *= friction;
 	
@@ -235,19 +245,10 @@ bool Excavator::processKeyboardInput()
 	}
 
 	return gameWon;
-
-
-
-
 }
 
 
 float Excavator::getSpeed()
 {
-	
-
 	return sqrt(pow(currentSpeedX, 2) + pow(currentSpeedZ, 2));
-
-	 
-
 }

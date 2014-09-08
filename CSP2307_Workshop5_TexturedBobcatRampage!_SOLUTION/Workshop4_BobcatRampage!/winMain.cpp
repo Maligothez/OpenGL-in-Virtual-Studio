@@ -50,9 +50,9 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	// north square
 
 	currentSquare.setName((string)"north");
-	
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(-1.0f, -1.0f, -1.0f);
 	vertices.push_back(currentVertex);
@@ -62,7 +62,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(-1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -92,10 +92,10 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 	//  south square
 
-		currentSquare.setName((string)"south");
-	
+	currentSquare.setName((string)"south");
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(-1.0f, -1.0f, 1.0f);
 	vertices.push_back(currentVertex);
@@ -105,7 +105,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(-1.0f, 1.0f, 1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -136,11 +136,11 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 
 	//  east square
-		
+
 	currentSquare.setName((string)"east");
-	
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(1.0f, -1.0f, -1.0f);
 	vertices.push_back(currentVertex);
@@ -150,7 +150,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(1.0f, -1.0f, 1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -183,9 +183,9 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 
 	currentSquare.setName((string)"west");
-	
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(-1.0f, -1.0f, -1.0f);
 	vertices.push_back(currentVertex);
@@ -195,7 +195,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(-1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -226,9 +226,9 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	// draw top square
 
 	currentSquare.setName((string)"top");
-	
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(-1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
@@ -238,7 +238,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -263,16 +263,16 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
 	currentSquare.setMaterial("skyboxT.bmp");
 
-	
+
 	skyboxElements.push_back(currentSquare);
 
-	
+
 	//  bottom square
 
 	currentSquare.setName((string)"bottom");
-	
+
 	// vertices	
-	
+
 	vertices.clear();
 	currentVertex.set(-1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
@@ -282,7 +282,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 	vertices.push_back(currentVertex);
 	currentVertex.set(1.0f, 1.0f, -1.0f);
 	vertices.push_back(currentVertex);
-	
+
 	// triangles
 	indices.clear();
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
@@ -306,7 +306,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
 	currentSquare.setMaterial("skyboxT.bmp");
-	
+
 	skyboxElements.push_back(currentSquare);
 
 	// cloud layer 1
@@ -436,8 +436,6 @@ void generateMap(vector<Geometry> &worldThings)
 	policeCar.setID(6);
 	worldThings.push_back(policeCar);
 
-	
-	
 	Geometry boundaryL;
 	boundaryL.setName((string)"boundary");
 	boundaryL.loadGeometry("resources\\boundary\\barrier.ASE");
@@ -448,32 +446,22 @@ void generateMap(vector<Geometry> &worldThings)
 	//left boundary
 	int lower = -20;
 	for (int j = 0; j <=4; j++) {
-	
-		
-
 		boundaryL.setPosition(Vector3f(-200,0,lower),"boundary");
 		boundaryL.setID(j+1);
 		worldThings.push_back(boundaryL);
-
 		lower += 20;
 	}
-	
-	
+
 	//rightboundary
 	lower = -40;
 	for (int j = 0; j <=5; j++) {
-	
-		
-
 		boundaryL.setPosition(Vector3f(203,0,lower),"boundary");
 		boundaryL.setID(j+1);
 		worldThings.push_back(boundaryL);
-
 		lower += 20;
 	}
 
 	lower = -40;
-	
 
 	//boundary Wide
 	Geometry boundaryW;
@@ -484,37 +472,21 @@ void generateMap(vector<Geometry> &worldThings)
 	boundaryW.setPosition(Vector3f(-200,0,-40),"boundary");
 	//boundaryW.setID(1);
 	//worldThings.push_back(boundaryW);
-	
+
 	//top boundary
 	int side = -200;
-	for (int j = 0; j <=10; j++) {
-		
-		
-	
+	for (int j = 0; j <20; j++) {
 		boundaryW.setPosition(Vector3f(side,0,-60),"boundary");
-		
 		worldThings.push_back(boundaryW);
-		
-
-		side += 30;
+		side += 20;
 	}
 	//bottom boundary
 	side = -200;
-	for (int j = 0; j <=10; j++) {
-		
-		
-	
+	for (int j = 0; j <20; j++) {
 		boundaryW.setPosition(Vector3f(side,0,60),"boundary");
-		
 		worldThings.push_back(boundaryW);
-		
-
-		side += 30;
+		side += 20;
 	}
-
-
-
-	
 
 	Geometry floor;
 	floor.setName((string)"floor");
@@ -525,11 +497,8 @@ void generateMap(vector<Geometry> &worldThings)
 	textureCoordinates.clear();
 	textureIndices.clear();
 	textureIndices.clear();
-	for (float x = -200; x <= 200; x += 20) {
-
-		for (float z = -60; z <= 60; z +=20) {
-
-
+	for (float x = -200; x < 200; x += 20) {
+		for (float z = -60; z < 60; z +=20) {
 			currentVertex.set(x, 0.0f, z);
 			vertices.push_back(currentVertex);
 			currentVertex.set(x, 0.0f, z+20);
@@ -548,28 +517,17 @@ void generateMap(vector<Geometry> &worldThings)
 			currentVertex.set(x+20,0,z);
 			textureCoordinates.push_back(currentVertex);
 
-
-			
 			indices.push_back(indicesIndex); indices.push_back(indicesIndex +1); indices.push_back(indicesIndex +2);
 			indices.push_back(indicesIndex); indices.push_back(indicesIndex +2); indices.push_back(indicesIndex +3);
-			
-			
+
 			textureIndices.push_back(indicesIndex); textureIndices.push_back(indicesIndex+1); textureIndices.push_back(indicesIndex+2);
 			textureIndices.push_back(indicesIndex); textureIndices.push_back(indicesIndex +2); textureIndices.push_back(indicesIndex +3);
-			
+
 			indicesIndex += 4;
-
 		}
-
 	}
-
-
 	floor.setGeometry(vertices, indices, textureCoordinates, textureIndices);
-
 	worldThings.push_back(floor);
-
-
-	
 
 	//for (int count=0; count<30; count++)
 	//{
@@ -643,7 +601,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 	vector<Geometry> sky;
 	generateSkybox(sky);
-	
+
 	vector<Geometry> worldThings;
 	generateMap(worldThings);
 
@@ -737,7 +695,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 					else if (!j->getName().compare("boundary"))
 					{
-
 						if (i->isColiding(j->getPosition(), (j->getBoundingSphereRadius())))
 						{
 							//float forceLength = force.length();							
@@ -746,16 +703,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 							// scale force so its greater closer to the house
 							//float maxForceLength = 100;
 							//forceLength = max(0, (maxForceLength-forceLength));
-							
+
 
 							//heading += force; // add the force to the sum of forces acting on the car
-
-
+						}
 					}
 				}
 			}
-		}
-		
+
 		}
 
 		// update police car position and orientation

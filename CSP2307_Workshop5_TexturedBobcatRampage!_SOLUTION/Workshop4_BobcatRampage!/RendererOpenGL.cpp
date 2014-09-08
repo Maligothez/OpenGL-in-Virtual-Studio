@@ -60,19 +60,19 @@ GLvoid RendererOpenGL::BuildFont(GLvoid)
 	HFONT font;
 	base = glGenLists(256);
 	font = CreateFont(-12, // font height
-						0, // width
-						0, // escapement angle
-						0, // orientation
-						FW_BOLD, // weight
-						FALSE, // italic
-						FALSE, // underline
-						FALSE, // strikeout
-						ANSI_CHARSET, // character set
-						OUT_TT_PRECIS, // output precision
-						CLIP_DEFAULT_PRECIS, // clipping precision
-						ANTIALIASED_QUALITY, // quality
-						FF_DONTCARE|DEFAULT_PITCH, // family and pitch
-						"Comic Sans MS"); // font name
+		0, // width
+		0, // escapement angle
+		0, // orientation
+		FW_BOLD, // weight
+		FALSE, // italic
+		FALSE, // underline
+		FALSE, // strikeout
+		ANSI_CHARSET, // character set
+		OUT_TT_PRECIS, // output precision
+		CLIP_DEFAULT_PRECIS, // clipping precision
+		ANTIALIASED_QUALITY, // quality
+		FF_DONTCARE|DEFAULT_PITCH, // family and pitch
+		"Comic Sans MS"); // font name
 	SelectObject(hDC, font);
 
 	wglUseFontOutlines( hDC,
@@ -138,7 +138,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 
 	// find the excavator geometry and set its parameters
 	// (does this really belong in a render method?)
-	
+
 	for(vector<Geometry>::iterator i = things.begin(); i<things.end(); i++)
 	{
 		if (!i->getName().compare("excavator"))
@@ -159,63 +159,53 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 		}
 	}
 
-
 	// enable texture mapping
 	//glEnable(GL_TEXTURE_2D);
-
 
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); // clear buffers from last frame
 	glLoadIdentity(); // clear coordinate transformation - (0,0,0) is the screen centre
 
-	
 	// **********************************
 	// perform the viewing transformation
 	// **********************************  
 
 	if (!fps)
 	{
-	// This will give us a 3rd person fixed camera:
-	// set up camera coordinates and point the camera at (0,0,0)
-	//float cameraDistance = 80;
-	float cameraDistance = (2*pow(speed,4)) + 70;
-	static float cameraHeight = 50;
-	float cameraAngle = (90-(180/3.1415927f)*atan(cameraDistance/cameraHeight));
-	glRotatef(cameraAngle,1,0,0);
-	//glTranslatef(0,-cameraHeight,-cameraDistance);
-	glTranslatef(-ExcavatorX,-cameraHeight,-cameraDistance);
-
-
+		// This will give us a 3rd person fixed camera:
+		// set up camera coordinates and point the camera at (0,0,0)
+		//float cameraDistance = 80;
+		float cameraDistance = (2*pow(speed,4)) + 100;
+		static float cameraHeight = 50;
+		float cameraAngle = (90-(180/3.1415927f)*atan(cameraDistance/cameraHeight));
+		glRotatef(cameraAngle,1,0,0);
+		//glTranslatef(0,-cameraHeight,-cameraDistance);
+		glTranslatef(-ExcavatorX,-cameraHeight,-cameraDistance);
 	}
 	else
 	{
+		glRotatef(-angleAroundY,0,1,0);
+		// enable texture mapping
+		glEnable(GL_TEXTURE_2D);
 
-	 glRotatef(-angleAroundY,0,1,0);
-	 // enable texture mapping
-	 glEnable(GL_TEXTURE_2D);
+		glPushMatrix();
+		glScalef(100,100,100);
+		for(vector<Geometry>::iterator skyGeometry = sky.begin(); skyGeometry<sky.end(); skyGeometry++)
+		{
+			// skyGeometry->drawOpenGLImmediate();
+			skyGeometry->drawOpenGLVertexBufferObject();
+		}
+		glPopMatrix();
+		glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
 
-	 glPushMatrix();
-	 glScalef(100,100,100);
-	 for(vector<Geometry>::iterator skyGeometry = sky.begin(); skyGeometry<sky.end(); skyGeometry++)
-	 {
-		 // skyGeometry->drawOpenGLImmediate();
-		 skyGeometry->drawOpenGLVertexBufferObject();
-	 }
-	 glPopMatrix();
-	 glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (draw over the skybox)
+		// enable texture mapping
+		glDisable(GL_TEXTURE_2D);
 
-	 // enable texture mapping
-	 glDisable(GL_TEXTURE_2D);
-
-	 glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
+		glTranslatef(-ExcavatorX, -20, -ExcavatorZ);
 	}
-
-
 
 	// ************************
 	// end of viewing transform
 	// ************************
-
-	
 
 	// draw the ground - this a triangle strip instead of a large
 	// quad - the more vertices the better the lighting will look
@@ -224,13 +214,13 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 	//glNormal3f(0,1,0);
 	//for (int zCoord = -planeSize; zCoord<planeSize; zCoord++)
 	//{
-		//glBegin(GL_TRIANGLE_STRIP);
-		  //for (int xCoord = -planeSize; xCoord<planeSize; xCoord++)
-		  //{
-			//  glVertex3i(xCoord,0,zCoord);
-			  //glVertex3i(xCoord,0,zCoord+1);
-		  //}
-	    //glEnd();
+	//glBegin(GL_TRIANGLE_STRIP);
+	//for (int xCoord = -planeSize; xCoord<planeSize; xCoord++)
+	//{
+	//  glVertex3i(xCoord,0,zCoord);
+	//glVertex3i(xCoord,0,zCoord+1);
+	//}
+	//glEnd();
 	//}
 
 	// draw the Geometrys
@@ -252,7 +242,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 	glColor3f(0,0,0);
 	// disable texture mapping for the fonts
 	glDisable(GL_TEXTURE_2D);
-	
+
 	//glPrint("ab");
 
 	SwapBuffers(hDC);
@@ -288,11 +278,11 @@ bool RendererOpenGL::bindToWindow(HWND &windowHandle)
 	// Third - create a rendering context for OpenGL (something OpenGL draws to and maps to the device)
 	// Fourth - make the rendering context 'current'
 	// Fifth - Set the size of the OpenGL window.
-	
+
 	// First - get the device context of the game window
 	hWnd = windowHandle;
 	hDC = GetDC(hWnd); // get the device context of the window
-	
+
 
 	// Second - set the device to some desired pixel format
 	// This is done be filling out a pixel format descriptor structure
@@ -330,35 +320,35 @@ bool RendererOpenGL::bindToWindow(HWND &windowHandle)
 		return (false);
 	}
 
-	
+
 
 	// Third - create rendering context
- 
-	 hRC = wglCreateContext(hDC); // windows dependent OpenGL function (wgl)
-	 if (hRC==NULL)
-	 {
-		 MessageBox (NULL,"Could not create GL rendering context","Error",MB_OK);
-		 return (false);
-	 }
 
-	 // Fourth - Make the rendering context current	 
-	 if (!wglMakeCurrent(hDC, hRC))
-	 {
-		 MessageBox (NULL,"Could not make rendering context current","Error",MB_OK);
-		 return (false);
-	 }
+	hRC = wglCreateContext(hDC); // windows dependent OpenGL function (wgl)
+	if (hRC==NULL)
+	{
+		MessageBox (NULL,"Could not create GL rendering context","Error",MB_OK);
+		return (false);
+	}
 
-	 // Fifth - set the size of the OpenGL window
+	// Fourth - Make the rendering context current	 
+	if (!wglMakeCurrent(hDC, hRC))
+	{
+		MessageBox (NULL,"Could not make rendering context current","Error",MB_OK);
+		return (false);
+	}
 
-	 /*
-	 ***** Note: this step is important, not setting an initial size
-	 can cause the whole OS to crash (computer is re-set)
-	 */
+	// Fifth - set the size of the OpenGL window
 
-	 RECT rect; // structure to store the coordinates of the 4 corners of the window
-	 GetClientRect (hWnd, &rect); // put the window coordinates in the structure
-	 ResizeCanvas(long(rect.right-rect.left), long(rect.bottom-rect.top));
-	 
+	/*
+	***** Note: this step is important, not setting an initial size
+	can cause the whole OS to crash (computer is re-set)
+	*/
+
+	RECT rect; // structure to store the coordinates of the 4 corners of the window
+	GetClientRect (hWnd, &rect); // put the window coordinates in the structure
+	ResizeCanvas(long(rect.right-rect.left), long(rect.bottom-rect.top));
+
 	return (true);
 }
 
@@ -393,7 +383,7 @@ void RendererOpenGL::initialise()
 	// files provided with visual studio
 	glewInit();
 
-    glClearColor(0.0,0.0,0.0,0.0);						// select what colour the background is (here set to black)
+	glClearColor(0.0,0.0,0.0,0.0);						// select what colour the background is (here set to black)
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing (using Z-buffer)
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
@@ -439,9 +429,9 @@ bool RendererOpenGL::releaseFromWindow()
 	//	MessageBox (NULL,"Could not release device context","Error",MB_OK);
 	//	return (false);
 	//}
-	
+
 	hRC	= NULL;
-    hDC	= NULL;	
+	hDC	= NULL;	
 
 	// delete the renderer and set it to NULL (this is how the singleton gets deleted)
 	delete renderer;
@@ -456,7 +446,7 @@ void RendererOpenGL::ResizeCanvas(long widthRequest, long heightRequest)
 {
 	rendererWidth = (GLsizei)widthRequest;
 	rendererHeight = (GLsizei)heightRequest;
-    glViewport(0, 0, rendererWidth, rendererHeight);
+	glViewport(0, 0, rendererWidth, rendererHeight);
 	setUpViewingFrustum();	
 }
 
