@@ -125,7 +125,7 @@ bool Excavator::processKeyboardInput()
 	locationX += currentSpeedX;
 	locationZ += currentSpeedZ;
 
-	if (locationX > 100 || locationX < -100 ) {
+	if (locationX > 200 || locationX < -200 ) {
 
 		currentSpeedX = -currentSpeedX;
 	}

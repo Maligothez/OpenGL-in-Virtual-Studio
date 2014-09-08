@@ -60,6 +60,8 @@ private:
 
 public:
 
+	
+
 	~Geometry()
 	{
 		// delete VBOs
@@ -319,6 +321,22 @@ public:
 		m_textureCoordinates = textureCoordinates;
 		m_textureIndices = textureIndices;
 		computeBoundingSphere(Vector3f(0,0,0));
+	}
+
+	void rotateCoordinates() {
+
+
+		int currentIndex = 0;
+		for each (Vertex3 currentVertex in m_vertexCoordinates)   {
+			currentVertex.set(currentVertex.z(), currentVertex.y(), currentVertex.x());
+				
+			}
+
+		for each (Vertex3 currentTexture in m_textureCoordinates)
+		{
+			currentTexture.set(currentTexture.z(), currentTexture.y(), currentTexture.x());
+		}
+
 	}
 
 	void drawOpenGLImmediate()

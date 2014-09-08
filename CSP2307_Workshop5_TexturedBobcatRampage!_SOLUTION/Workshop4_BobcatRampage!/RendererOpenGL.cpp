@@ -219,19 +219,19 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 
 	// draw the ground - this a triangle strip instead of a large
 	// quad - the more vertices the better the lighting will look
-	glColor3f(0,1,0);
-	int planeSize = 100;
-	glNormal3f(0,1,0);
-	for (int zCoord = -planeSize; zCoord<planeSize; zCoord++)
-	{
-		glBegin(GL_TRIANGLE_STRIP);
-		  for (int xCoord = -planeSize; xCoord<planeSize; xCoord++)
-		  {
-			  glVertex3i(xCoord,0,zCoord);
-			  glVertex3i(xCoord,0,zCoord+1);
-		  }
-	    glEnd();
-	}
+	//glColor3f(0,1,0);
+	//int planeSize = 100;
+	//glNormal3f(0,1,0);
+	//for (int zCoord = -planeSize; zCoord<planeSize; zCoord++)
+	//{
+		//glBegin(GL_TRIANGLE_STRIP);
+		  //for (int xCoord = -planeSize; xCoord<planeSize; xCoord++)
+		  //{
+			//  glVertex3i(xCoord,0,zCoord);
+			  //glVertex3i(xCoord,0,zCoord+1);
+		  //}
+	    //glEnd();
+	//}
 
 	// draw the Geometrys
 	for(vector<Geometry>::iterator currentThing = things.begin(); currentThing<things.end(); currentThing++)

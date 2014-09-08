@@ -316,7 +316,11 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 void generateMap(vector<Geometry> &worldThings)
 {
-
+	vector<Vertex3> vertices;
+	Vertex3 currentVertex;
+	vector<int> indices;
+	vector<Vertex3> textureCoordinates;
+	vector<int> textureIndices;
 	// This should really be replaced by a level loader to load
 	// and parse a description of the world from a file
 
@@ -434,41 +438,78 @@ void generateMap(vector<Geometry> &worldThings)
 
 	
 	
-	Geometry boundary;
-	boundary.setName((string)"boundary");
-	boundary.loadGeometry("resources\\boundary\\barrier.ASE");
-	boundary.setColour(1.0f,1.0f,1.0f);
-	boundary.setPosition(Vector3f(-100,0,-60),"boundary");
-	boundary.setID(1);
-	worldThings.push_back(boundary);
+	Geometry boundaryL;
+	boundaryL.setName((string)"boundary");
+	boundaryL.loadGeometry("resources\\boundary\\barrier.ASE");
+	boundaryL.setColour(1.0f,1.0f,1.0f);
+	boundaryL.setPosition(Vector3f(-200,0,-40),"boundary");
+	boundaryL.setID(1);
+	worldThings.push_back(boundaryL);
+	//left boundary
+	int lower = -20;
+	for (int j = 0; j <=4; j++) {
 	
-	int lower = -40;
+		
+
+		boundaryL.setPosition(Vector3f(-200,0,lower),"boundary");
+		boundaryL.setID(j+1);
+		worldThings.push_back(boundaryL);
+
+		lower += 20;
+	}
+	
+	
+	//rightboundary
+	lower = -40;
 	for (int j = 0; j <=5; j++) {
 	
 		
 
-	boundary.setPosition(Vector3f(-100,0,lower),"boundary");
-	boundary.setID(j+1);
-	worldThings.push_back(boundary);
+		boundaryL.setPosition(Vector3f(203,0,lower),"boundary");
+		boundaryL.setID(j+1);
+		worldThings.push_back(boundaryL);
 
-	lower += 20;
+		lower += 20;
 	}
 
-	lower = -60;
+	lower = -40;
 	
 
-	int side = -100;
+	//boundary Wide
+	Geometry boundaryW;
+	boundaryW.setName((string)"boundary");
+	boundaryW.loadGeometry("resources\\boundary\\barrier.ASE");
+	boundaryW.setColour(1.0f,1.0f,1.0f);
+	boundaryW.rotateCoordinates();
+	boundaryW.setPosition(Vector3f(-200,0,-40),"boundary");
+	//boundaryW.setID(1);
+	//worldThings.push_back(boundaryW);
 	
-	for (int j = 0; j <=5; j++) {
-	glPushMatrix();
+	//top boundary
+	int side = -200;
+	for (int j = 0; j <=10; j++) {
+		
 		
 	
-	boundary.setPosition(Vector3f(side,0,-60),"boundary");
-	glRotatef(45,0,0,1);
-	worldThings.push_back(boundary);
-	glPopMatrix();
+		boundaryW.setPosition(Vector3f(side,0,-60),"boundary");
+		
+		worldThings.push_back(boundaryW);
+		
 
-	side += 20;
+		side += 30;
+	}
+	//bottom boundary
+	side = -200;
+	for (int j = 0; j <=10; j++) {
+		
+		
+	
+		boundaryW.setPosition(Vector3f(side,0,60),"boundary");
+		
+		worldThings.push_back(boundaryW);
+		
+
+		side += 30;
 	}
 
 
@@ -477,9 +518,55 @@ void generateMap(vector<Geometry> &worldThings)
 
 	Geometry floor;
 	floor.setName((string)"floor");
+	vertices.clear();
+	floor.setColour(0,1,0);
+	int indicesIndex = 0;
+	indices.clear();
+	textureCoordinates.clear();
+	textureIndices.clear();
+	textureIndices.clear();
+	for (float x = -200; x <= 200; x += 20) {
 
-	
+		for (float z = -60; z <= 60; z +=20) {
 
+
+			currentVertex.set(x, 0.0f, z);
+			vertices.push_back(currentVertex);
+			currentVertex.set(x, 0.0f, z+20);
+			vertices.push_back(currentVertex);
+			currentVertex.set(x+20, 0.0f, z+20);
+			vertices.push_back(currentVertex);
+			currentVertex.set(x+20, 0.0f, z);
+			vertices.push_back(currentVertex);
+
+			currentVertex.set(x,0,z);
+			textureCoordinates.push_back(currentVertex);
+			currentVertex.set(x,0,z+20);
+			textureCoordinates.push_back(currentVertex);
+			currentVertex.set(x+20,0,z+20);
+			textureCoordinates.push_back(currentVertex);
+			currentVertex.set(x+20,0,z);
+			textureCoordinates.push_back(currentVertex);
+
+
+			
+			indices.push_back(indicesIndex); indices.push_back(indicesIndex +1); indices.push_back(indicesIndex +2);
+			indices.push_back(indicesIndex); indices.push_back(indicesIndex +2); indices.push_back(indicesIndex +3);
+			
+			
+			textureIndices.push_back(indicesIndex); textureIndices.push_back(indicesIndex+1); textureIndices.push_back(indicesIndex+2);
+			textureIndices.push_back(indicesIndex); textureIndices.push_back(indicesIndex +2); textureIndices.push_back(indicesIndex +3);
+			
+			indicesIndex += 4;
+
+		}
+
+	}
+
+
+	floor.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+
+	worldThings.push_back(floor);
 
 
 	
