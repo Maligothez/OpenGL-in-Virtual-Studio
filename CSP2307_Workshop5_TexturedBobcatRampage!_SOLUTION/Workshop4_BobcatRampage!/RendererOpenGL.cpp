@@ -129,6 +129,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 	float ExcavatorX = bigExcavator.getLocationX();
 	float ExcavatorZ = bigExcavator.getLocationZ();
 	float angleAroundY = bigExcavator.getZAngleInDegrees();
+	float speed = bigExcavator.getSpeed();
 
 	float armAngle = bigExcavator.getUpperArmAngle();
 	float scoopAngle = bigExcavator.getLowerArmAngle();
@@ -175,8 +176,9 @@ void RendererOpenGL::Render(Excavator &bigExcavator, vector<Geometry> &things, v
 	{
 	// This will give us a 3rd person fixed camera:
 	// set up camera coordinates and point the camera at (0,0,0)
-	float cameraDistance = 80;
-	static float cameraHeight = 120;
+	//float cameraDistance = 80;
+	float cameraDistance = (2*pow(speed,4)) + 70;
+	static float cameraHeight = 50;
 	float cameraAngle = (90-(180/3.1415927f)*atan(cameraDistance/cameraHeight));
 	glRotatef(cameraAngle,1,0,0);
 	//glTranslatef(0,-cameraHeight,-cameraDistance);

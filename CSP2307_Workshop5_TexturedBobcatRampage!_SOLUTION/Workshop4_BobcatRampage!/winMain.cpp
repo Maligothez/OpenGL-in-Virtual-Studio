@@ -376,6 +376,8 @@ void generateMap(vector<Geometry> &worldThings)
 	}
 
 
+
+
 	// assemble and add police cars
 
 	Geometry policeCar;
@@ -429,6 +431,58 @@ void generateMap(vector<Geometry> &worldThings)
 	policeCar.setPosition(Vector3f(50,0,-70),"police");
 	policeCar.setID(6);
 	worldThings.push_back(policeCar);
+
+	
+	
+	Geometry boundary;
+	boundary.setName((string)"boundary");
+	boundary.loadGeometry("resources\\boundary\\barrier.ASE");
+	boundary.setColour(1.0f,1.0f,1.0f);
+	boundary.setPosition(Vector3f(-100,0,-60),"boundary");
+	boundary.setID(1);
+	worldThings.push_back(boundary);
+	
+	int lower = -40;
+	for (int j = 0; j <=5; j++) {
+	
+		
+
+	boundary.setPosition(Vector3f(-100,0,lower),"boundary");
+	boundary.setID(j+1);
+	worldThings.push_back(boundary);
+
+	lower += 20;
+	}
+
+	lower = -60;
+	
+
+	int side = -100;
+	
+	for (int j = 0; j <=5; j++) {
+	glPushMatrix();
+		
+	
+	boundary.setPosition(Vector3f(side,0,-60),"boundary");
+	glRotatef(45,0,0,1);
+	worldThings.push_back(boundary);
+	glPopMatrix();
+
+	side += 20;
+	}
+
+
+
+	
+
+	Geometry floor;
+	floor.setName((string)"floor");
+
+	
+
+
+
+	
 
 	//for (int count=0; count<30; count++)
 	//{
@@ -565,7 +619,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 		for(vector<Geometry>::iterator i = worldThings.begin(); i<worldThings.end(); i++)
 		{
 			if (!i->getName().compare("excavator"))
+
 			{
+				Vector3f heading(0,0,0);
+				Vector3f force(0,0,0);
 				// check collisions between the excavator and other things in the world
 				for(vector<Geometry>::iterator j = worldThings.begin(); j<worldThings.end(); j++)
 				{
@@ -590,10 +647,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 							i->setColour(1,0,0);
 						}
 					}
+
+					else if (!j->getName().compare("boundary"))
+					{
+
+						if (i->isColiding(j->getPosition(), (j->getBoundingSphereRadius())))
+						{
+							//float forceLength = force.length();							
+							//force = (1/forceLength)*force; // normalize to get direction only
+
+							// scale force so its greater closer to the house
+							//float maxForceLength = 100;
+							//forceLength = max(0, (maxForceLength-forceLength));
+							
+
+							//heading += force; // add the force to the sum of forces acting on the car
+
+
+					}
 				}
 			}
 		}
-
+		
+		}
 
 		// update police car position and orientation
 

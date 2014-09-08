@@ -26,6 +26,8 @@ public:
 
 	bool processKeyboardInput(); //vector<staticGameObject> &objects);
 	bool checkCollisions(vector<Geometry> &things);
+	float getSpeed();
+
 private:
 	float movementSpeed;
 	float currentSpeedX;
