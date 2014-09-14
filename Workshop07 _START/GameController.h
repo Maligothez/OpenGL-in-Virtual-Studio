@@ -181,35 +181,39 @@ private:
 				{
 					for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
 
-						sheepPushVector = j->getPosition() - current->getPosition(); 
-						sheepFlockVector = j->getPosition() - current->getPosition();
-						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+10))
-						{
+						if (!j->getName().compare("sheep")) {
 
-							float sheepPushForceLength = sheepPushVector.length();							
-							sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
+							sheepFlockVector = j->getPosition() - current->getPosition();
 
-							// scale force so its greater closer to the sheep
-							float maxForceLength = 100;
-							sheepPushForceLength = max(0, (maxForceLength-sheepPushForceLength));
-							sheepPushVector = sheepPushForceLength*sheepPushVector;
+							//cohesion
+							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
+							{
+								float sheepFlockForceLength = sheepFlockVector.length();							
+								sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
 
 
-						}	
-
-						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
-						{
-							float sheepFlockForceLength = sheepFlockVector.length();							
-							sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+								float maxForceLength = 10;
+								sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
+								sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
 
 
-							float maxForceLength = 10;
-							sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
-							sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
+							}	
+							//seperation
+							sheepPushVector = current->getPosition() - j->getPosition(); 
+							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+5))
+							{
+
+								float sheepPushForceLength = sheepPushVector.length();							
+								sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
+
+								// scale force so its greater closer to the sheep
+								float maxForceLength = 100;
+								sheepPushForceLength = max(0, (maxForceLength-sheepPushForceLength));
+								sheepPushVector = sheepPushForceLength*sheepPushVector;
 
 
-						}	
-
+							}	
+						}
 					}
 
 					if (!current->getName().compare("excavator"))
@@ -226,7 +230,7 @@ private:
 								excavatorVector = (1/excavatorLength)*excavatorVector; // normalize to get direction only
 
 
-								float maxForceLength = 10;
+								float maxForceLength = 100;
 								excavatorLength = max(0, (maxForceLength-excavatorLength));
 								sheepFlockVector = excavatorLength*excavatorVector;
 
@@ -265,8 +269,9 @@ private:
 
 					}
 											
-					heading += sheepFlockVector; 
+					//heading += sheepFlockVector; 
 					heading += sheepPushVector; 
+					//heading += excavatorVector;
 				}
 
 
