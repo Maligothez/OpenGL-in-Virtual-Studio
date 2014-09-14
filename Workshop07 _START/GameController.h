@@ -166,11 +166,68 @@ private:
 				// Y O U R   C O D E   S T A R T S   H E R E
 				//****************************************************//
 				
+				
+
+				Vector3f sheepPushVector(0,0,0);
+				Vector3f sheepFlockVector(0,0,0);
+				Vector3f excavatorVector(0,0,0);
+				Vector3f houseVector(0,0,0);
+
+
+				if (!current->getName().compare("sheep"))
+					{
+						// houses 'repulse' the police car (to avoid the car colliding with them
+						sheepPushVector = current->getPosition() - current->getPosition(); // get a vector pointing from the house towards the car
+
+						if (current->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+10))
+						{
+							float sheepPushForceLength = sheepPushVector.length();							
+							sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
+
+							// scale force so its greater closer to the house
+							float maxForceLength = 100;
+							sheepPushForceLength = max(0, (maxForceLength-sheepPushForceLength));
+							sheepPushVector = sheepPushForceLength*sheepPushVector;
+
+							
+						}					
+
+
+						if (current->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
+						{
+							float sheepFlockForceLength = sheepFlockVector.length();							
+							sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+
+							// scale force so its greater closer to the house
+							//float maxForceLength = 100;
+							//sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
+							sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
+
+							
+						}	
+
+						
+					//	if (current->isColiding(->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
+						//{
+							//float sheepFlockForceLength = sheepFlockVector.length();							
+							//sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+
+							// scale force so its greater closer to the house
+							//float maxForceLength = 100;
+							//sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
+							//sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
+
+							
+					//	}				
+						heading += sheepFlockVector; // add the force to the sum of forces acting on the car
+						//heading += sheepPushVector; // add the force to the sum of forces acting on the car
+				}
+
 
 
 				// Sample code to move the sheep diagonally down - delete and replace with your code
-				Vector3f sampleVector(0.1f,0.0f,0.1f);
-				heading += sampleVector;
+				//Vector3f sampleVector(0.1f,0.0f,0.1f);
+				
 				// end of sample code
 
 
