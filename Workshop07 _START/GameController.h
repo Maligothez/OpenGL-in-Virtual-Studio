@@ -168,59 +168,105 @@ private:
 				
 				
 
-				Vector3f sheepPushVector(0,0,0);
+				Vector3f sheepPushVector(0.0,0,0.0);
 				Vector3f sheepFlockVector(0,0,0);
 				Vector3f excavatorVector(0,0,0);
 				Vector3f houseVector(0,0,0);
 
 
+				
+					// 
+				// get a vector pointing from the sheep towards other sheep
 				if (!current->getName().compare("sheep"))
-					{
-						// houses 'repulse' the police car (to avoid the car colliding with them
-						sheepPushVector = current->getPosition() - current->getPosition(); // get a vector pointing from the house towards the car
+				{
+					for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
 
-						if (current->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+10))
+						sheepPushVector = j->getPosition() - current->getPosition(); 
+						sheepFlockVector = j->getPosition() - current->getPosition();
+						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+10))
 						{
+
 							float sheepPushForceLength = sheepPushVector.length();							
 							sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
 
-							// scale force so its greater closer to the house
+							// scale force so its greater closer to the sheep
 							float maxForceLength = 100;
 							sheepPushForceLength = max(0, (maxForceLength-sheepPushForceLength));
 							sheepPushVector = sheepPushForceLength*sheepPushVector;
 
-							
-						}					
 
+						}	
 
-						if (current->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
+						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
 						{
 							float sheepFlockForceLength = sheepFlockVector.length();							
 							sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
 
-							// scale force so its greater closer to the house
-							//float maxForceLength = 100;
-							//sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
+
+							float maxForceLength = 10;
+							sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
 							sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
 
-							
+
 						}	
 
-						
-					//	if (current->isColiding(->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
-						//{
-							//float sheepFlockForceLength = sheepFlockVector.length();							
-							//sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+					}
 
-							// scale force so its greater closer to the house
-							//float maxForceLength = 100;
-							//sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
-							//sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
+					if (!current->getName().compare("excavator"))
+					{
 
-							
-					//	}				
-						heading += sheepFlockVector; // add the force to the sum of forces acting on the car
-						//heading += sheepPushVector; // add the force to the sum of forces acting on the car
+						for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
+
+
+							excavatorVector = j->getPosition() - current->getPosition();
+
+							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+BOBCATRANGE))
+							{
+								float excavatorLength = excavatorVector.length();							
+								excavatorVector = (1/excavatorLength)*excavatorVector; // normalize to get direction only
+
+
+								float maxForceLength = 10;
+								excavatorLength = max(0, (maxForceLength-excavatorLength));
+								sheepFlockVector = excavatorLength*excavatorVector;
+
+
+							}	
+
+
+						}
+
+					}
+
+					if (!current->getName().compare("house"))
+					{
+
+						for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
+
+
+							houseVector = j->getPosition() - current->getPosition();
+
+							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+BOBCATRANGE))
+							{
+								float houseLength = houseVector.length();							
+								excavatorVector = (1/houseLength)*houseVector; // normalize to get direction only
+
+
+								float maxForceLength = 10;
+								houseLength = max(0, (maxForceLength-houseLength));
+								sheepFlockVector = houseLength*houseVector;
+
+
+							}	
+
+
+
+						}
+
+					}
+											
+					heading += sheepFlockVector; 
+					heading += sheepPushVector; 
 				}
 
 
