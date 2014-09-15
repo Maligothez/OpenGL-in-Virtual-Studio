@@ -176,6 +176,7 @@ private:
 				Vector3f sheepPushVector(0.0,0,0.0);
 				Vector3f sheepFlockVector(0,0,0);
 				Vector3f sheepCohesionForce(0,0,0);
+				Vector3f alignmentVector(0,0,0);
 				Vector3f excavatorVector(0,0,0);
 				Vector3f houseVector(0,0,0);
 
@@ -194,36 +195,21 @@ private:
 
 						sheepFlockVector = current->getPosition() - j->getPosition();
 
-						//cohesion
+						//cohesion, aquiring sheep total and finding average
 						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
 						{
-
-
-
-
+							
 							sheepTotal = sheepTotal + j->getPosition();
 							averageCount++;
-
-
-
-
-							//sheepAverage = sheepAverage(sheepTotal.x()/averageCount, sheepTotal.y()/averageCount, sheepTotal.z()/averageCount);
-
-
-							float sheepFlockForceLength = sheepFlockVector.length();							
-							sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
-
-
-							float flockMaxForceLength = FLOCKRADIUS;
-							sheepFlockForceLength = max(0, (flockMaxForceLength-sheepFlockForceLength));
-							sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
-
+							
+							alignmentVector += j->getAngle();
+												
 
 						}	
 
 						//seperation
 						sheepPushVector = current->getPosition() - j->getPosition(); 
-						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())))
+						if (current->isColiding(j->getPosition(), j->getBoundingSphereRadius()))
 						{
 
 							float sheepPushForceLength = sheepPushVector.length();							
@@ -234,34 +220,39 @@ private:
 							sheepPushForceLength = max(0, (pushMaxForceLength-sheepPushForceLength));
 							sheepPushVector = sheepPushForceLength*sheepPushVector;
 
-
+							heading += sheepPushVector; 
 						}	
+
+
+
 					}
+
+					
 					//}
 
 					if (!current->getName().compare("excavator"))
 					{
 
-						for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
+						
 
 
-							excavatorVector = j->getPosition() - current->getPosition();
+							excavatorVector = current->getPosition() - j->getPosition();
 
-							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+BOBCATRANGE))
+							if (j->isColiding(current->getPosition(), current->getBoundingSphereRadius()+BOBCATRANGE))
 							{
 								float excavatorLength = excavatorVector.length();							
 								excavatorVector = (1/excavatorLength)*excavatorVector; // normalize to get direction only
 
 
-								float excavatorMaxForceLength = 100;
+								float excavatorMaxForceLength = 500;
 								excavatorLength = max(0, (excavatorMaxForceLength-excavatorLength));
-								sheepFlockVector = excavatorLength*excavatorVector;
+								excavatorVector = excavatorLength*excavatorVector;
 
-
+								heading += excavatorVector;
 							}	
 
 
-						}
+						
 
 					}
 
@@ -273,13 +264,13 @@ private:
 
 							houseVector = j->getPosition() - current->getPosition();
 
-							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+BOBCATRANGE))
+							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+HOUSERANGE))
 							{
 								float houseLength = houseVector.length();							
 								houseVector = (1/houseLength)*houseVector; // normalize to get direction only
 
 
-								float houseMaxForceLength = 10;
+								float houseMaxForceLength = HOUSERANGE;
 								houseLength = max(0, (houseMaxForceLength-houseLength));
 								sheepFlockVector = houseLength*houseVector;
 
@@ -293,13 +284,21 @@ private:
 					}
 
 					//heading += sheepFlockVector; 
-					heading += sheepPushVector; 
-					//heading += excavatorVector;
+					
+					
 				}
 
+				//cohesion force. Getting average of posiitons and using it as centre
+				alignmentVector = alignmentVector - current->getPosition();
+				float alignmentVectorLength =	alignmentVector.length();
+				alignmentVector = (1/alignmentVectorLength) * alignmentVector;
+				float alignmentMaxForceLength = 50;
+						alignmentVectorLength = max(0, (alignmentMaxForceLength-alignmentVectorLength));
+							alignmentVector = alignmentVectorLength*alignmentVector;
+									
 				sheepAverage = Vector3f(sheepTotal.x()/averageCount, sheepTotal.y()/averageCount, sheepTotal.z()/averageCount);
 
-				sheepCohesionForce = current->getPosition() - sheepAverage;
+				sheepCohesionForce = sheepAverage - current->getPosition();
 				float sheepCohesionForceLength = sheepCohesionForce.length();							
 				sheepCohesionForce = (1/sheepCohesionForceLength)*sheepCohesionForce; // normalize to get direction only
 
@@ -307,7 +306,9 @@ private:
 							float cohesionMaxForceLength = 50;
 							sheepCohesionForceLength = max(0, (cohesionMaxForceLength-sheepCohesionForceLength));
 							sheepCohesionForce = sheepCohesionForceLength*sheepCohesionForce;
-				heading+= sheepCohesionForce;
+							
+							heading += alignmentVector;
+							heading+= sheepCohesionForce;
 				// Sample code to move the sheep diagonally down - delete and replace with your code
 				//Vector3f sampleVector(0.1f,0.0f,0.1f);
 
