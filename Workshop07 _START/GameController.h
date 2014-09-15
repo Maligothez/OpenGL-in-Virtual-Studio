@@ -158,10 +158,15 @@ private:
 		// go through the game objects and proces each sheep
 		for(vector<Geometry>::iterator current = gameObjects.begin(); current<gameObjects.end(); current++)
 		{
+
+			
+			Vector3f sheepAverage(0,0,0);
 			if (!current->getName().compare("sheep")) // if the object is a sheep
 			{
 				Vector3f heading(0,0,0); // this is the vector that must be set
 
+
+				
 				//*****************************************************//
 				// Y O U R   C O D E   S T A R T S   H E R E
 				//****************************************************//
@@ -170,50 +175,68 @@ private:
 
 				Vector3f sheepPushVector(0.0,0,0.0);
 				Vector3f sheepFlockVector(0,0,0);
+				Vector3f sheepCohesionForce(0,0,0);
 				Vector3f excavatorVector(0,0,0);
 				Vector3f houseVector(0,0,0);
 
-
+				Vector3f sheepTotal(0,0,0);
+				Vector3f sheepAverage(0,0,0);
+				int averageCount = 0;
+				
 				
 					// 
 				// get a vector pointing from the sheep towards other sheep
 				//if (!current->getName().compare("sheep"))
 				//{
-					for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
+				for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
 
-						if (!j->getName().compare("sheep")&& current->getID() != j->getID()) {
+					if (!j->getName().compare("sheep")&& current->getID() != j->getID()) {
 
-							sheepFlockVector = current->getPosition() - j->getPosition();
+						sheepFlockVector = current->getPosition() - j->getPosition();
 
-							//cohesion
-							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
-							{
-								float sheepFlockForceLength = sheepFlockVector.length();							
-								sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+						//cohesion
+						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
+						{
 
 
-								float maxForceLength = 10;
-								sheepFlockForceLength = max(0, (maxForceLength-sheepFlockForceLength));
-								sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
 
 
-							}	
-							//seperation
-							sheepPushVector = current->getPosition() - j->getPosition(); 
-							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+5))
-							{
-
-								float sheepPushForceLength = sheepPushVector.length();							
-								sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
-
-								// scale force so its greater closer to the sheep
-								float maxForceLength = 100;
-								sheepPushForceLength = max(0, (maxForceLength-sheepPushForceLength));
-								sheepPushVector = sheepPushForceLength*sheepPushVector;
+							sheepTotal = sheepTotal + j->getPosition();
+							averageCount++;
 
 
-							}	
-						}
+
+
+							//sheepAverage = sheepAverage(sheepTotal.x()/averageCount, sheepTotal.y()/averageCount, sheepTotal.z()/averageCount);
+
+
+							float sheepFlockForceLength = sheepFlockVector.length();							
+							sheepFlockVector = (1/sheepFlockForceLength)*sheepFlockVector; // normalize to get direction only
+
+
+							float flockMaxForceLength = FLOCKRADIUS;
+							sheepFlockForceLength = max(0, (flockMaxForceLength-sheepFlockForceLength));
+							sheepFlockVector = sheepFlockForceLength*sheepFlockVector;
+
+
+						}	
+
+						//seperation
+						sheepPushVector = current->getPosition() - j->getPosition(); 
+						if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())))
+						{
+
+							float sheepPushForceLength = sheepPushVector.length();							
+							sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
+
+							// scale force so its greater closer to the sheep
+							float pushMaxForceLength = 50;
+							sheepPushForceLength = max(0, (pushMaxForceLength-sheepPushForceLength));
+							sheepPushVector = sheepPushForceLength*sheepPushVector;
+
+
+						}	
+					}
 					//}
 
 					if (!current->getName().compare("excavator"))
@@ -230,8 +253,8 @@ private:
 								excavatorVector = (1/excavatorLength)*excavatorVector; // normalize to get direction only
 
 
-								float maxForceLength = 100;
-								excavatorLength = max(0, (maxForceLength-excavatorLength));
+								float excavatorMaxForceLength = 100;
+								excavatorLength = max(0, (excavatorMaxForceLength-excavatorLength));
 								sheepFlockVector = excavatorLength*excavatorVector;
 
 
@@ -253,11 +276,11 @@ private:
 							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+BOBCATRANGE))
 							{
 								float houseLength = houseVector.length();							
-								excavatorVector = (1/houseLength)*houseVector; // normalize to get direction only
+								houseVector = (1/houseLength)*houseVector; // normalize to get direction only
 
 
-								float maxForceLength = 10;
-								houseLength = max(0, (maxForceLength-houseLength));
+								float houseMaxForceLength = 10;
+								houseLength = max(0, (houseMaxForceLength-houseLength));
 								sheepFlockVector = houseLength*houseVector;
 
 
@@ -268,17 +291,26 @@ private:
 						}
 
 					}
-											
+
 					//heading += sheepFlockVector; 
 					heading += sheepPushVector; 
 					//heading += excavatorVector;
 				}
 
+				sheepAverage = Vector3f(sheepTotal.x()/averageCount, sheepTotal.y()/averageCount, sheepTotal.z()/averageCount);
 
+				sheepCohesionForce = current->getPosition() - sheepAverage;
+				float sheepCohesionForceLength = sheepCohesionForce.length();							
+				sheepCohesionForce = (1/sheepCohesionForceLength)*sheepCohesionForce; // normalize to get direction only
 
+							// scale force so its greater closer to the sheep
+							float cohesionMaxForceLength = 50;
+							sheepCohesionForceLength = max(0, (cohesionMaxForceLength-sheepCohesionForceLength));
+							sheepCohesionForce = sheepCohesionForceLength*sheepCohesionForce;
+				heading+= sheepCohesionForce;
 				// Sample code to move the sheep diagonally down - delete and replace with your code
 				//Vector3f sampleVector(0.1f,0.0f,0.1f);
-				
+
 				// end of sample code
 
 
