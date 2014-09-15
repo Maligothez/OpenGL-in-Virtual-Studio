@@ -11,10 +11,7 @@ This version:
 * WIN32API code for window creation and message pump is in a separate class (windowCreator)
 * OpenGL rendering is introduced with the RendererOpenGL class - implemented using the Singleton design pattern
 
-Created: 30th May 2005 - Martin Masek - SCIS, Edith Cowan University.
-Modified: 31st May 2005 - Martin Masek - SCIS, Edith Cowan University.
-Modified: 3rd August 2005 - Martin Masek - SCIS, Edith Cowan University.
-Modified: 11th August 2009 - Martin Masek - SCSS, Edith Cowan University
+
 */
 
 // first, include any necessary files and declare global variables.

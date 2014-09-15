@@ -6,7 +6,7 @@
 // Created: 31 May 2005
 // Modified: 3rd August 2005
 // Modified: 20th August 2009
-// Author: Martin Masek - SCIS, Edith Cowan University
+// 
 
 #include <windows.h>
 #include <math.h>

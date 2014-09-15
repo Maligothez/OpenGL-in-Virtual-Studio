@@ -5,7 +5,7 @@
 //
 // Created: 31 May 2005
 // Modified: 3rd August 2005
-// Author: Martin Masek - SCIS, Edith Cowan University
+// 
 
 // This class was made using the Singleton design pattern - where only one instance of the class can exist
 // and there is a way to get this instance from multiple points in the program.

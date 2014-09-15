@@ -1,7 +1,7 @@
 #pragma once
 
 // game logic for the bobcat game
-// Created September 2009, Martin Masek, SCSS - Edith Cowan University
+// Created September 2009, 
 
 #include<vector>
 #include<float.h>
@@ -177,13 +177,13 @@ private:
 				
 					// 
 				// get a vector pointing from the sheep towards other sheep
-				if (!current->getName().compare("sheep"))
-				{
+				//if (!current->getName().compare("sheep"))
+				//{
 					for(vector<Geometry>::iterator j = gameObjects.begin(); j<gameObjects.end(); j++) {
 
-						if (!j->getName().compare("sheep")) {
+						if (!j->getName().compare("sheep")&& current->getID() != j->getID()) {
 
-							sheepFlockVector = j->getPosition() - current->getPosition();
+							sheepFlockVector = current->getPosition() - j->getPosition();
 
 							//cohesion
 							if (j->isColiding(current->getPosition(), (current->getBoundingSphereRadius())+FLOCKRADIUS))
@@ -214,7 +214,7 @@ private:
 
 							}	
 						}
-					}
+					//}
 
 					if (!current->getName().compare("excavator"))
 					{

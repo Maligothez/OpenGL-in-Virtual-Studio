@@ -1,4 +1,4 @@
-// 2005 - Martin Masek, Edith Cowan University
+
 
 class GameTimerHighPerformance
 {

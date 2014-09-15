@@ -6,7 +6,7 @@
 // class Vector3f - 3D vector class holding floating point numbers
 // If you have done the C++ unit - perhaps you would like to template
 // this to take any type.
-// Author: Martin Masek - Edith Cowan University 17th August 2005.
+
 // Some of these ideas came from code by Marijn Haverbeke - available from the
 // Game Programming Wiki at (http://gpwiki.org/index.php/C:Vectors)
 class Vector3f

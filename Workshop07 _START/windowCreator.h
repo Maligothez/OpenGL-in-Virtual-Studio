@@ -7,7 +7,7 @@ the OS
 - re-sizing of the OpenGL viewport is also done through WndProc using the RendererOpenGL object in response to to WM_SIZE message
 
 4 June 2005
-Martin Masek - SCIS, Edith Cowan University.
+
 
 */
 

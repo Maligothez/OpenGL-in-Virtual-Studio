@@ -4,7 +4,7 @@ windowCreator class implementation
 the OS
 
 4 June 2005
-Martin Masek - SCIS, Edith Cowan University.
+
 
 */
 
