@@ -1,0 +1,35 @@
+﻿'framework.exe': Loaded 'C:\Users\Martin\Desktop\teaching\IntroductionTo3DGameProgramming\2012S2\Schedule\Week04 - Timing, VBOs\workshop4_VBOhints\Debug\framework.exe', Symbols loaded.
+'framework.exe': Loaded 'C:\Windows\System32\ntdll.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\kernel32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\KernelBase.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\user32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\gdi32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\lpk.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\usp10.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\msvcrt.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Users\Martin\Desktop\teaching\IntroductionTo3DGameProgramming\2012S2\Schedule\Week03 - Blending, Anti-aliasing, Fog\workshop3_base - Copy\glew32.dll', No symbols loaded.
+'framework.exe': Loaded 'C:\Windows\System32\opengl32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\advapi32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\sechost.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\rpcrt4.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\glu32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\ddraw.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\dciman32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\setupapi.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\cfgmgr32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\oleaut32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\ole32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\devobj.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\dwmapi.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\imm32.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\msctf.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\uxtheme.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\nvoglv32.dll', Cannot find or open the PDB file
+The thread 'Win32 Thread' (0x694) has exited with code 0 (0x0).
+The thread 'Win32 Thread' (0x182c) has exited with code 0 (0x0).
+The thread 'Win32 Thread' (0x1044) has exited with code 0 (0x0).
+'framework.exe': Loaded 'C:\Windows\System32\cryptbase.dll', Cannot find or open the PDB file
+'framework.exe': Loaded 'C:\Windows\System32\clbcatq.dll', Cannot find or open the PDB file
+The thread 'Win32 Thread' (0x1f70) has exited with code 0 (0x0).
+The thread 'Win32 Thread' (0x1b6c) has exited with code 0 (0x0).
+The program '[4620] framework.exe: Native' has exited with code 0 (0x0).
