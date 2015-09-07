@@ -5,27 +5,35 @@
 //
 // Created: 31 May 2005
 // Modified: 3rd August 2005
-// Modified: 29th August 2012 - VBO Example
 // Author: Martin Masek - SCIS, Edith Cowan University
 
 // This class was made using the Singleton design pattern - where only one instance of the class can exist
 // and there is a way to get this instance from multiple points in the program.
-// This is done since both WinMain and the WindowCreator class need to use the renderer - implementing a singleton
-// means that we don't need to create two separate objects (one for WinMain and one for the WindowCreator)
+// This is done sice both WinMain and the WindowCreator class need to use the renderer - implementing a singleton
+// means that we dont need to create two separate objects (one for WinMain and one for the WindowCreator)
 //
 // Features of the Singleton implementation is highlighted in the code using <SINGLETON>
 //
 // For more information on the Singleton design pattern - see http://gethelp.devx.com/techtips/cpp_pro/10min/10min0200.asp
 
+#pragma once
 
 // include the headers for the OpenGL and OpenGL utilities libraries
+#include <windows.h>
 #include "GLEW/glew.h"
-#include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/gl.h>
+#include <vector>
+#include "Game.h"
 #include "Excavator.h"
+#include "Geometry.h"
+
+
+using namespace std;
 
 // import the libraries (alternative to this would have been to add these into the linker input dependencies in visual studio)
 #pragma comment(lib, "glew32.lib")
+
 #pragma	comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 
@@ -41,13 +49,21 @@ public: // class member variables and methods following 'public:' are public - c
 	void initialise(); // set up the OpenGL state machine with desired settings (eg. enable texture mapping etc..)
 	void ResizeCanvas(long widthRequest, long heightRequest); // re-size glViewport (should be called by the window when it re-sizes) - also calls setupViewingFrustum
 	void setUpViewingFrustum(); // set the limits on the viewing volume (which part of the world gets shown on the monitor)
-	void Render(Excavator bigExcavator); // do the actual drawing
+	void Render(Excavator &bigExcavator, bool thirdPersonCamera, vector<Geometry> &things); // do the actual drawing
 
+	void RendererOpenGL::renderBox(GLfloat scale, GLuint northID, GLuint southID
+							   ,GLuint eastID, GLuint westID, GLuint topID, GLuint bottomID);
 	// the next four methods demonstrate how to get information from the graphics card regarding its OpenGL support
 	void getGLvendor();
 	void getGLrenderer();
 	void getGLversion();
 	void getGLextensions();
+
+	GLuint loadTexture(char *fileName);
+	// font methods - based heavily on code from NeHe (outline fonts tutorial)
+	GLvoid BuildFont(GLvoid);
+	GLvoid KillFont(GLvoid);
+	GLvoid glPrint(const char* fmt, ...);
 
 
 
@@ -77,5 +93,19 @@ private:   // class member variables and methods following 'private' are private
 	GLdouble fieldOfViewAngle;
 	GLdouble nearClippingPlane;
 	GLdouble farClippingPlane;	
+
+	GLuint m_myFirstTexture;
+	GLuint m_examsTexture;
+	GLuint m_skybox[6];  // using the prefix m_ gives you an
+  // easy way to distinguish member 
+  // variables from local variables.
+
+	// this is the sphere object used for the 'hills'
+	GLUquadricObj *m_mySphere;
+
+	// for fonts:
+	GLuint base; // display list ID of first character in the font
+	GLYPHMETRICSFLOAT gmf[256];
+
 
 };

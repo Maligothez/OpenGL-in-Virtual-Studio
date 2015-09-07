@@ -44,13 +44,10 @@
     <ClInclude Include="windowCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLEW\glew.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glew32.dll">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

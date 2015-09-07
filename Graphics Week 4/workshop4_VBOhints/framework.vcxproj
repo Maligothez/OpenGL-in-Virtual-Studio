@@ -106,14 +106,11 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Excavator.h" />
-    <ClInclude Include="GLEW\glew.h" />
     <ClInclude Include="RendererOpenGL.h" />
     <ClInclude Include="windowCreator.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="glew32.dll">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
+    <None Include="glew32.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

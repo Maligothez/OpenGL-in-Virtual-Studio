@@ -19,6 +19,9 @@
     <Filter Include="Maths">
       <UniqueIdentifier>{2e356c93-be2b-4e81-abe3-b5a0b7cf5fc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TextureCreator">
+      <UniqueIdentifier>{20c37d2c-ec56-4e49-92db-22d4b6338d54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Vertex3.h">
       <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureCreator.h">
+      <Filter>TextureCreator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
