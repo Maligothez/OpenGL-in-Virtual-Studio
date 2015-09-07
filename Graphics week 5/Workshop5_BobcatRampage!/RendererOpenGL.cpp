@@ -126,7 +126,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 
 	float armAngle = bigExcavator.getUpperArmAngle();
 	float scoopAngle = bigExcavator.getLowerArmAngle();
-	GLuint m_textureObject = TextureCreator::loadTexture("skyboxN.bmp");
+	
 	// find the excavator geometry and set its parameters
 	// (does this really belong in a render method?)
 	
@@ -151,18 +151,9 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 	}
 
 
-	glBindTexture(GL_TEXTURE_2D, m_textureObject);
-	glColor3f(1, 1, 1);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-1.0f, 0.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(1.0f, 2.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-1.0f, 2.0f, 0.0f);
-	glEnd();
+	//glBindTexture(GL_TEXTURE_2D, m_textureObject);
+	//glColor3f(1, 1, 1);
+	
 	
 
 	// enable texture mapping
@@ -223,6 +214,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 	    glEnd();
 	}
 
+	
 	// draw the Geometrys
 	for each (Geometry currentThing in things)
 	{
@@ -231,6 +223,10 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 	}
 
 	SwapBuffers(hDC);
+
+	
+
+	
 }
 
 

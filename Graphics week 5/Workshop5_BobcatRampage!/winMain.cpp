@@ -158,6 +158,7 @@ void generateMap(vector<Geometry> &worldThings)
 	policeCar.setID(6);
 	worldThings.push_back(policeCar);
 
+
 }
 
 
@@ -440,6 +441,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 		// render the world
 		renderer->Render(bigExcavator, thirdPersonCamera, worldThings); // call the renderers 'Render' method (from the RendererOpenGL class)
+
+		
 	}
 	
 	/* 

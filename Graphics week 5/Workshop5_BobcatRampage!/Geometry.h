@@ -42,12 +42,18 @@ private:
 	float m_boundingSphereRadius;
 
 	Vector3f m_colour; // vertex colour
+	
 
 	// children
 	vector<Geometry> m_children;
 
 	GLuint mBufferVertList;
 	int mNumberOfVertices;
+	GLuint m_material;
+	string m_materialFile;
+	vector<Vertex3> textCoordinates;
+	vector<Vertex3> textindicies;
+
 
 
 public:
@@ -121,6 +127,9 @@ public:
 		return m_boundingSphereRadius;
 	}
 
+	void SetMaterial(string fileName) {
+		m_material = TextureCreator::loadTexture(fileName);
+	}
 
 	bool isColiding(Vector3f position, float otherSphereRadius)
 	{
