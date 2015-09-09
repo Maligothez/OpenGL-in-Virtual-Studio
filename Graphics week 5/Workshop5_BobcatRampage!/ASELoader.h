@@ -23,12 +23,12 @@ public:
 	static int m_numberOfVertices;
 	static int m_numberOfFaces;
 	
-	static void loadModel(vector<Vertex3> &vertices, vector<int> &triangles, string fileName);
+	static void loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles, string &textureFile, string fileName);
 
 private:
-	static void readGeometry(vector<Vertex3> &vertices, vector<int> &triangles);
+	static void readGeometry(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles);
 
-	static void readMesh(vector<Vertex3> &vertices, vector<int> &triangles);
+	static void readMesh(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles);
 
 	static void readVertexList(vector<Vertex3> &vertices);
 

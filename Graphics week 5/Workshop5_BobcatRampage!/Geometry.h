@@ -269,7 +269,7 @@ public:
 	void loadGeometry(string fileName)
 	{
 		// loads model geometry from disk
-		ASELoader::loadModel(m_vertexCoordinates, m_triangleIndices, fileName);
+		ASELoader::loadModel(m_vertexCoordinates, m_triangleIndices, m_textureCoordinates, m_textureIndices, m_materialFile, fileName);
 		computeBoundingSphere(Vector3f(0, 0, 0));
 	}
 

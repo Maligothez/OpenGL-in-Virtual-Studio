@@ -10,7 +10,7 @@ fstream ASELoader::m_modelFile;
 int ASELoader::m_numberOfVertices = 0;
 int ASELoader::m_numberOfFaces = 0;
 
-void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, string fileName)
+void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles, string &textureFile, string fileName)
 {
 	vertices.clear();
 	triangles.clear();
@@ -35,13 +35,9 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, str
 			else if (currentLine.find("*GEOMOBJECT")!= string::npos) 
 			{
 				// read geometry...
-				readGeometry(vertices, triangles);
+				readGeometry(vertices, triangles, textures, texturedTriangles);
 			}
-			else if (currentLine.find("*MESH") != string::npos)
-			{
-				// read geometry...
-				readMesh(vertices, triangles);
-			}
+			
 			else if (currentLine.find("*GROUP")!= string::npos)
 			{
 			}
@@ -74,7 +70,7 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, str
 	}
 }
 
-void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles)
+void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles)
 {
 	char line[255];
 	string currentLine = line;
@@ -88,7 +84,7 @@ void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles)
 		if (currentLine.find("*MESH ")!= string::npos)
 		{
 			// read mesh data...
-			readMesh(vertices, triangles);
+			readMesh(vertices, triangles, textures, texturedTriangles);
 		}
 		else
 		{
@@ -111,7 +107,7 @@ void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles)
 	} while (currentLine.find("}") == string::npos);
 }
 
-void ASELoader::readMesh(vector<Vertex3> &vertices, vector<int> &triangles)
+void ASELoader::readMesh(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles)
 {
 	char line[255];
 	string currentLine = line;
@@ -146,12 +142,12 @@ void ASELoader::readMesh(vector<Vertex3> &vertices, vector<int> &triangles)
 		else if (currentLine.find("*MESH_TVERTLISTT") != string::npos)
 		{
 			// read the actual faces...
-			readMeshFaceList(triangles);
+			readTVertexList(textures);
 		}
 		else if (currentLine.find("*MESH_TFACELIST") != string::npos)
 		{
 			// read the actual faces...
-			readMeshFaceList(triangles);
+			readTMeshFaceList(texturedTriangles);
 		}
 
 		else
