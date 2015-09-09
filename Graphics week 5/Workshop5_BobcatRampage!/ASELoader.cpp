@@ -37,6 +37,11 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, str
 				// read geometry...
 				readGeometry(vertices, triangles);
 			}
+			else if (currentLine.find("*MESH") != string::npos)
+			{
+				// read geometry...
+				readMesh(vertices, triangles);
+			}
 			else if (currentLine.find("*GROUP")!= string::npos)
 			{
 			}
@@ -138,6 +143,17 @@ void ASELoader::readMesh(vector<Vertex3> &vertices, vector<int> &triangles)
 			// read the actual faces...
 			readMeshFaceList(triangles);
 		}
+		else if (currentLine.find("*MESH_TVERTLISTT") != string::npos)
+		{
+			// read the actual faces...
+			readMeshFaceList(triangles);
+		}
+		else if (currentLine.find("*MESH_TFACELIST") != string::npos)
+		{
+			// read the actual faces...
+			readMeshFaceList(triangles);
+		}
+
 		else
 		{
 			// read some unknown data
@@ -193,6 +209,8 @@ void ASELoader::readVertexList(vector<Vertex3> &vertices)
 
 }
 
+
+
 void ASELoader::readMeshFaceList(vector<int> &triangles)
 {
 	char line[255];
@@ -222,6 +240,73 @@ void ASELoader::readMeshFaceList(vector<int> &triangles)
 			triangles.push_back(c);
 		}
 		m_modelFile.getline(line,255);
+		currentLine = line;
+	} while (currentLine.find("}") == string::npos);
+}
+
+void ASELoader::readTVertexList(vector<Vertex3> &vertices)
+{
+	char line[255];
+	string currentLine = line;
+
+	// read the file until we come to a close bracket
+	m_modelFile.getline(line, 255);
+	currentLine = line;
+	int i;
+	float x, y, z;
+	Vertex3 newVertex;
+	do
+	{
+		if (currentLine.find("*MESH_TVERT ") != string::npos)
+		{
+			// read in the x,y,z components of the vertex
+			// this line in the .ASE file is of the form (eg.):
+			// *MESH_VERTEX    0	-20.1053	-18.7514	0.0000
+
+			int displacement = (int)currentLine.find("*MESH_TVERT ") + 13;
+
+			//sscanf(currentLine.substr(displacement).c_str(), "%d\t%f\t%f\t%f", &i, &x, &y, &z);
+			sscanf_s(currentLine.substr(displacement).c_str(), "%d\t%f\t%f\t%f", &i, &x, &y, &z);
+
+			newVertex.set(x, y, z);
+			vertices.push_back(newVertex);
+		}
+		m_modelFile.getline(line, 255);
+		currentLine = line;
+
+	} while (currentLine.find("}") == string::npos);
+
+}
+
+void ASELoader::readTMeshFaceList(vector<int> &triangles)
+{
+	char line[255];
+	string currentLine = line;
+
+	// read the file until we come to a close bracket
+	m_modelFile.getline(line, 255);
+	currentLine = line;
+	int i, a, b, c;
+	do
+	{
+		if (currentLine.find("*MESH_TFACE ") != string::npos)
+		{
+			// read in the vertex indices for the face
+			// this line is of the form (eg.):
+			// *MESH_FACE    0:    A:    0 B:    2 C:    3 AB:    1 BC:    1 CA:    0	 *MESH_SMOOTHING 2 	*MESH_MTLID 
+
+			int displacement = (int)currentLine.find("*MESH_TFACE ") + 11;
+			// just read the A,B,C indices of the triangle (ignore the other stuff for now)
+			string test1 = currentLine.substr(displacement);
+			const char* tempString = test1.c_str();
+			//sscanf(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
+			sscanf_s(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
+
+			triangles.push_back(a);
+			triangles.push_back(b);
+			triangles.push_back(c);
+		}
+		m_modelFile.getline(line, 255);
 		currentLine = line;
 	} while (currentLine.find("}") == string::npos);
 }

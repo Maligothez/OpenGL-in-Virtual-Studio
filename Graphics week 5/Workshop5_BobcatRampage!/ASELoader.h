@@ -33,4 +33,9 @@ private:
 	static void readVertexList(vector<Vertex3> &vertices);
 
 	static void readMeshFaceList(vector<int> &triangles);
+
+	static void readTVertexList(vector<Vertex3> &vertices);
+
+	static void readTMeshFaceList(vector<int> &triangles);
+
 };
