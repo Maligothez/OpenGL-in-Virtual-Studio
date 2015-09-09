@@ -273,7 +273,7 @@ void generateSkybox(vector<Geometry> &skyboxElements)
 
 	currentSquare.setName((string)"bottom");
 
-	// vertices	
+	//// vertices	
 
 	vertices.clear();
 	currentVertex.set(-1.0f, -1.0f, -1.0f);

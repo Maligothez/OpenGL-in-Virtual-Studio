@@ -22,8 +22,8 @@ private:
 public:
 	static GLuint loadTexture(string fileName)
 	{
-		ilInit();
-		iluInit();
+		//ilInit();
+		//iluInit();
 		ILuint ILImage;
 		GLuint textureHandle;
 		ilGenImages(1,&ILImage);

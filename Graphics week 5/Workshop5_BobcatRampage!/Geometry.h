@@ -129,7 +129,9 @@ public:
 	}
 
 	void setMaterial(string fileName) {
+		
 		m_material = TextureCreator::loadTexture(fileName);
+		m_materialFile = fileName;
 	}
 
 	bool isColiding(Vector3f position, float otherSphereRadius)
@@ -313,6 +315,7 @@ public:
 		// draw this geometry
 
 		glBegin(GL_TRIANGLES);
+		int count = 0;
 
 		for each (int i in m_triangleIndices)
 
@@ -320,11 +323,11 @@ public:
 			if (m_material != NULL)
 			{
 				
-				glTexCoord2f(m_textureCoordinates[m_textureIndices[i]].x(),
-			   m_textureCoordinates[m_textureIndices[i]].y());
+				glTexCoord2f(m_textureCoordinates[m_textureIndices[count]].x(),
+			   m_textureCoordinates[m_textureIndices[count]].y());
 			}
 			glVertex3fv(m_vertexCoordinates[i]);
-			
+			count++;
 		}
 
 		glEnd();

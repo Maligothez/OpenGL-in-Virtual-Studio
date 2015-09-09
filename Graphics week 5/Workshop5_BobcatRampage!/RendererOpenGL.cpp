@@ -400,6 +400,8 @@ void RendererOpenGL::initialise()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// give OpenGL a hint on which perspective calculation to use (here suggesting the nicest)
 	SwapBuffers(hDC);	// draw the screen (will draw a black blank screen as no drawing has been done yet)
 	glLineWidth(4);
+	ilInit();
+	iluInit();
 
 }
 
