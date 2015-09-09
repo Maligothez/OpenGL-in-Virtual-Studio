@@ -31,12 +31,18 @@ private:
 	// geometry identifier
 	string m_ID;
 	int m_uniqueID;
-	GLuint m_material;
-	string m_materialFile;
+
 	// vertex coordinates
 	vector<Vertex3> m_vertexCoordinates; // a list of all the vertices in the model
 	// triangle indices
 	vector<int> m_triangleIndices; // list storing the order that vertices are drawn
+	// texture coordinates
+	vector<Vertex3> m_textureCoordinates;
+	// texture coordinate indices
+	vector<int> m_textureIndices;
+
+	GLuint m_material;
+	string m_materialFile;
 
 	// modelToWorldTranform matrix; // To be done
 	Vector3f m_relativeOrientation; // angle relative to parent (x,y,z angles)
@@ -44,62 +50,82 @@ private:
 	float m_boundingSphereRadius;
 
 	Vector3f m_colour; // vertex colour
-	
 
 	// children
 	vector<Geometry> m_children;
 
-	GLuint mBufferVertList;
-	int mNumberOfVertices;
-	
-	vector<Vertex3> m_textureCoordinates;
-	vector<int> m_textureIndices;
-
-	//GLuint m_bufferVertList;
+	GLuint m_bufferVertList;
 	GLuint m_bufferTriList;
-	
-
 
 
 public:
 
+
+
+	~Geometry()
+	{
+		// delete VBOs
+		glDeleteBuffers(1, &m_bufferVertList);
+		m_bufferVertList = NULL;
+		glDeleteBuffers(1, &m_bufferTriList);
+		m_bufferTriList = NULL;		
+		if (m_material!=NULL)
+		{
+			//glDeleteTextures(1, &m_material);
+			m_material = NULL;
+		}
+	}
+
 	Geometry() // constructor
 	{
 		// clear the vectors
+		m_textureCoordinates.clear();
+		m_textureIndices.clear();
 		m_vertexCoordinates.clear();
 		m_triangleIndices.clear();
+		m_textureCoordinates.clear();
 		m_children.clear();
-		m_relativeOrientation.set(0, 0, 0);
-		m_relativePosition.set(0, 0, 0);
-		m_colour.set(0, 0, 0);
+		m_relativeOrientation.set(0,0,0);
+		m_relativePosition.set(0,0,0);
+		m_colour.set(0,0,0);
+
 		m_material = NULL;
+		m_bufferVertList = NULL;
+		m_bufferTriList = NULL;
 		m_materialFile.clear();
 
 		// create some example geometry
-		//Vertex3 test(-1,0,0);
-		//m_vertexCoordinates.push_back(test);
-		//	test.set(0,1,0);
-		//m_vertexCoordinates.push_back(test);
-		//test.set(1,0,0);
-		//m_vertexCoordinates.push_back(test);
+		Vertex3 test(-1,0,0);
+		m_vertexCoordinates.push_back(test);
+		test.set(0,1,0);
+		m_vertexCoordinates.push_back(test);
+		test.set(1,0,0);
+		m_vertexCoordinates.push_back(test);
 
 		m_triangleIndices.clear();
 		m_triangleIndices.push_back(0);
 		m_triangleIndices.push_back(1);
 		m_triangleIndices.push_back(2);
 
-		computeBoundingSphere(Vector3f(0, 0, 0));
+		computeBoundingSphere(Vector3f(0,0,0));
+	}
 
-		mBufferVertList = NULL;
+	bool hasVBO()
+	{
+		if (m_bufferVertList!=NULL)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	void clearVBO()
+	{
+		glDeleteBuffers(1, &m_bufferVertList);
+		m_bufferVertList = NULL;
+		glDeleteBuffers(1, &m_bufferTriList);
 		m_bufferTriList = NULL;
 	}
-
-	~Geometry() // destructor
-	{
-		// the object is being destroyed - so free its VBO
-		glDeleteBuffers(1, &mBufferVertList);
-	}
-
 
 	float getBoundingSphereRadius()
 	{
@@ -119,16 +145,16 @@ public:
 			{
 				//temp = pow(vert.x()-centre.x(),2) + pow(vert.y()-centre.y(),2) + pow(vert.z()-centre.z(),2);
 				// take x and z only (bounding circle)
-				temp = pow(vert.x() - centre.x(), 2) + pow(vert.z() - centre.z(), 2);
+				temp = pow(vert.x()-centre.x(),2) + pow(vert.z()-centre.z(),2);
 				temp = sqrt(temp);
-				m_boundingSphereRadius = max(m_boundingSphereRadius, temp);
+				m_boundingSphereRadius = max(m_boundingSphereRadius,temp);
 			}
 			// check the kids vertices as well
 			if (!m_children.empty())
 			{
-				for each (Geometry child in m_children)
+				for(vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
 				{
-					temp = child.computeBoundingSphere(centre - child.getPosition());
+					temp = child->computeBoundingSphere(centre-child->getPosition());
 					m_boundingSphereRadius = max(m_boundingSphereRadius, temp);
 				}
 			}
@@ -136,17 +162,12 @@ public:
 		return m_boundingSphereRadius;
 	}
 
-	void setMaterial(string fileName) {
-		
-		m_material = TextureCreator::loadTexture(fileName);
-		m_materialFile = fileName;
-	}
 
 	bool isColiding(Vector3f position, float otherSphereRadius)
 	{
 		// bounding sphere collision detection
 		Vector3f displacement = position - m_relativePosition;
-		if (displacement.lengthSquared() < pow(m_boundingSphereRadius + otherSphereRadius, 2))
+		if (displacement.lengthSquared()<pow(m_boundingSphereRadius+otherSphereRadius,2))
 		{
 			return (1);
 		}
@@ -162,6 +183,20 @@ public:
 		m_children.push_back(newChild);
 	}
 
+	void setMaterial(string name)
+	{		
+		m_materialFile = name;	
+		m_material = TextureCreator::loadTexture(m_materialFile);
+		if (!glIsTexture(m_material))
+		{
+			// error???
+		}
+	}
+
+	GLuint getMaterial()
+	{
+		return m_material;
+	}
 
 	void setName(string &name)
 	{
@@ -185,7 +220,7 @@ public:
 
 	void setColour(float r, float g, float b)
 	{
-		m_colour.set(r, g, b);
+		m_colour.set(r,g,b);
 	}
 
 
@@ -199,7 +234,7 @@ public:
 		if (!this->m_ID.compare(geometryID))
 		{
 			// do rotation of this
-			m_relativeOrientation = angle;
+			m_relativeOrientation= angle;
 			return true;
 		}
 		else // else check children
@@ -207,7 +242,7 @@ public:
 			bool found = false;
 
 
-			for (vector<Geometry>::iterator i = m_children.begin(); i < m_children.end(); i++)
+			for(vector<Geometry>::iterator i = m_children.begin(); i<m_children.end(); i++)
 			{
 				// if ((*i)->setAngle(angle, geometryID))
 				if (i->setAngle(angle, geometryID))
@@ -215,14 +250,6 @@ public:
 					return true;
 				}
 			}
-
-			//for each (Geometry child in m_children)
-			//{
-			//	if (child.setAngle(angle, geometryID))
-			//	{
-			//		return true;
-			//	}
-			//}
 			return false;
 		}
 	}
@@ -245,7 +272,7 @@ public:
 		else // else check children
 		{
 			bool found = false;
-			for (vector<Geometry>::iterator i = m_children.begin(); i < m_children.end(); i++)
+			for(vector<Geometry>::iterator i = m_children.begin(); i<m_children.end(); i++)
 			{
 				// if ((*i)->setAngle(angle, geometryID))
 				if (i->setPosition(position, geometryID))
@@ -265,9 +292,10 @@ public:
 		// INSERT UPDATE CODE HERE
 
 		// then update children
-		for each (Geometry child in m_children)
+
+		for(vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
 		{
-			child.update();
+			child->update();
 		}
 
 
@@ -278,45 +306,40 @@ public:
 	{
 		// loads model geometry from disk
 		ASELoader::loadModel(m_vertexCoordinates, m_triangleIndices, m_textureCoordinates, m_textureIndices, m_materialFile, fileName);
-		computeBoundingSphere(Vector3f(0, 0, 0));
+		// load the texture file
 		if (!m_materialFile.empty())
 		{
 			m_material = TextureCreator::loadTexture(m_materialFile);
 		}
-		computeBoundingSphere(Vector3f(0, 0, 0));
+		computeBoundingSphere(Vector3f(0,0,0));
 	}
 
-	void setGeometry(vector<Vertex3>& vertices, vector<int>&
-		triangles, vector<Vertex3> &textureCoordinates, vector<int>
-		&textureIndices)
+	void setGeometry(vector<Vertex3>& vertices, vector<int>& triangles, vector<Vertex3> &textureCoordinates, vector<int> &textureIndices)
 	{
 		m_vertexCoordinates = vertices;
 		m_triangleIndices = triangles;
 		m_textureCoordinates = textureCoordinates;
 		m_textureIndices = textureIndices;
-		computeBoundingSphere(Vector3f(0, 0, 0));
+		computeBoundingSphere(Vector3f(0,0,0));
 	}
 
-	
+	void rotateCoordinates() {
+		vector<Vertex3> tmp = m_vertexCoordinates;
+		m_vertexCoordinates.clear();
+		for each (Vertex3 currentVertex in tmp)   
+		{
+			Vertex3 tmpVertex;
+			tmpVertex.set(-currentVertex.z(), currentVertex.y(), currentVertex.x());
+			m_vertexCoordinates.push_back(tmpVertex);
+		}
+	}
 
 	void drawOpenGLImmediate()
 	{
-
-		if (!m_materialFile.empty())
-		{
-			if (!glIsTexture(m_material))
-			{
-				m_material = TextureCreator::loadTexture(m_materialFile);
-			}
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_material);
-		}
 		glPushMatrix();
 
 		// model to parent transform
 		glTranslatef(m_relativePosition.x(), m_relativePosition.y(), m_relativePosition.z()); // translation
-
-		
 
 		glRotatef(m_relativeOrientation.x(), 1, 0, 0); // Euler rotation
 		glRotatef(m_relativeOrientation.y(), 0, 1, 0);
@@ -327,19 +350,29 @@ public:
 		// set the geometry colour
 		glColor3f(m_colour.x(), m_colour.y(), m_colour.z());
 
+		// activate the geometry texture
+
+		if (!m_materialFile.empty())
+		{
+			if (!glIsTexture(m_material))
+			{
+				m_material = TextureCreator::loadTexture(m_materialFile); // error???
+			}
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture (GL_TEXTURE_2D, m_material);
+		}
+
+
 		// draw this geometry
 
 		glBegin(GL_TRIANGLES);
+
 		int count = 0;
-
 		for each (int i in m_triangleIndices)
-
 		{
-			if (m_material != NULL)
+			if (m_material!=NULL)
 			{
-				
-				glTexCoord2f(m_textureCoordinates[m_textureIndices[count]].x(),
-			   m_textureCoordinates[m_textureIndices[count]].y());
+				glTexCoord2f(m_textureCoordinates[m_textureIndices[count]].x(), m_textureCoordinates[m_textureIndices[count]].y());
 			}
 			glVertex3fv(m_vertexCoordinates[i]);
 			count++;
@@ -347,20 +380,17 @@ public:
 
 		glEnd();
 
+		glDisable(GL_TEXTURE_2D);
 
 		// now draw the kids
-		for each (Geometry child in m_children)
+		for(vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
 		{
-			child.drawOpenGLImmediate();
+			child->drawOpenGLImmediate();
 		}
 
 		glPopMatrix();
-
-
-		glDisable(GL_TEXTURE_2D);
 	}
 
-	//creates vertex buffer
 	void createOpenGLVertexBufferObject()
 	{
 		//
@@ -380,7 +410,7 @@ public:
 		for (int i = 0; i<m_triangleIndices.size(); i++)
 		{
 			// check if the vertex/texture pair is already inserted in the new list
-			for (int j = 0; j<numberOfAddedVertices; j++)
+			for (int j=0; j<numberOfAddedVertices; j++)
 			{
 				// check the vertex coordinate
 				if (m_vertexCoordinates[m_triangleIndices[i]] == expandedVertices[j])
@@ -435,11 +465,11 @@ public:
 		// *****************************
 
 		// get a buffer ID
-		glGenBuffers(1, &mBufferVertList);
+		glGenBuffers(1, &m_bufferVertList);
 		// make the buffer current
-		glBindBuffer(GL_ARRAY_BUFFER, mBufferVertList);
+		glBindBuffer(GL_ARRAY_BUFFER, m_bufferVertList);
 		// make space for the data
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)* 3 * m_vertexCoordinates.size() + sizeof(GLfloat)* 2 * m_textureCoordinates.size(), NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*3*m_vertexCoordinates.size() +sizeof(GLfloat)*2*m_textureCoordinates.size(), NULL, GL_STATIC_DRAW);
 
 		// map the buffer to main memory
 		GLfloat *vertBuff = (GLfloat *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -451,8 +481,8 @@ public:
 		for each (Vertex3 currentVertex in m_vertexCoordinates)
 		{
 			vertBuff[currentIndex] = currentVertex.x();
-			vertBuff[currentIndex + 1] = currentVertex.y();
-			vertBuff[currentIndex + 2] = currentVertex.z();
+			vertBuff[currentIndex+1] = currentVertex.y();
+			vertBuff[currentIndex+2] = currentVertex.z();
 			currentIndex += 3;
 		}
 		// texture coordinates
@@ -461,7 +491,7 @@ public:
 			for each (Vertex3 currentTexture in m_textureCoordinates)
 			{
 				vertBuff[currentIndex] = currentTexture.x();
-				vertBuff[currentIndex + 1] = currentTexture.y();
+				vertBuff[currentIndex+1] = currentTexture.y();
 				currentIndex += 2;
 			}
 		}
@@ -479,7 +509,7 @@ public:
 		// make the buffer current
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferTriList);
 		// make space for the data
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* m_triangleIndices.size(), NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * m_triangleIndices.size(), NULL, GL_STATIC_DRAW);
 
 		// map the buffer to main memory
 		GLuint *triBuff = (GLuint *)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -500,7 +530,7 @@ public:
 	void drawOpenGLVertexBufferObject()
 	{
 		// check that the buffer exists
-		if (mBufferVertList == NULL)
+		if (m_bufferVertList==NULL)
 		{
 			createOpenGLVertexBufferObject();
 		}
@@ -522,19 +552,19 @@ public:
 		// draw this geometry
 
 		// make the buffers current
-		glBindBuffer(GL_ARRAY_BUFFER, mBufferVertList);
+		glBindBuffer(GL_ARRAY_BUFFER, m_bufferVertList);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferTriList);
 
 		// enable the drawing of vertex positions
 		glEnableClientState(GL_VERTEX_ARRAY);
 		// point to the vertex data
-		glVertexPointer(3, GL_FLOAT, 0, (float *)NULL);
+		glVertexPointer(3,GL_FLOAT, 0, (float *)NULL);
 
 		// same for textures
 		if (!m_textureIndices.empty())
 		{
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glTexCoordPointer(2, GL_FLOAT, 0, (float *)NULL + (m_vertexCoordinates.size() * 3));
+			glTexCoordPointer(2,GL_FLOAT,0, (float *)NULL + (m_vertexCoordinates.size()* 3));
 		}
 
 
@@ -547,7 +577,7 @@ public:
 				m_material = TextureCreator::loadTexture(m_materialFile); // error???
 			}
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_material);
+			glBindTexture (GL_TEXTURE_2D, m_material);
 		}
 
 
@@ -558,7 +588,7 @@ public:
 
 
 		// now draw the kids
-		for (vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
+		for(vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
 		{
 			child->drawOpenGLVertexBufferObject();
 		}
