@@ -31,7 +31,8 @@ private:
 	// geometry identifier
 	string m_ID;
 	int m_uniqueID;
-
+	GLuint m_material;
+	string m_materialFile;
 	// vertex coordinates
 	vector<Vertex3> m_vertexCoordinates; // a list of all the vertices in the model
 	// triangle indices
@@ -50,10 +51,10 @@ private:
 
 	GLuint mBufferVertList;
 	int mNumberOfVertices;
-	GLuint m_material;
-	string m_materialFile;
+	
 	vector<Vertex3> m_textureCoordinates;
 	vector<int> m_textureIndices;
+	
 
 
 
@@ -68,7 +69,8 @@ public:
 		m_relativeOrientation.set(0, 0, 0);
 		m_relativePosition.set(0, 0, 0);
 		m_colour.set(0, 0, 0);
-
+		m_material = NULL;
+		m_materialFile.clear();
 
 		// create some example geometry
 		//Vertex3 test(-1,0,0);
@@ -271,6 +273,11 @@ public:
 		// loads model geometry from disk
 		ASELoader::loadModel(m_vertexCoordinates, m_triangleIndices, m_textureCoordinates, m_textureIndices, m_materialFile, fileName);
 		computeBoundingSphere(Vector3f(0, 0, 0));
+		if (!m_materialFile.empty())
+		{
+			m_material = TextureCreator::loadTexture(m_materialFile);
+		}
+		computeBoundingSphere(Vector3f(0, 0, 0));
 	}
 
 	void setGeometry(vector<Vertex3>& vertices, vector<int>&
@@ -283,6 +290,8 @@ public:
 		m_textureIndices = textureIndices;
 		computeBoundingSphere(Vector3f(0, 0, 0));
 	}
+
+	
 
 	void drawOpenGLImmediate()
 	{
@@ -340,6 +349,7 @@ public:
 		}
 
 		glPopMatrix();
+
 
 		glDisable(GL_TEXTURE_2D);
 	}

@@ -41,8 +41,8 @@ private:
 
 	static void readMeshFaceList(vector<int> &triangles);
 
-	static void readTVertexList(vector<Vertex3> &vertices);
+	static void readTVertexList(vector<Vertex3>&textures);
 
-	static void readTMeshFaceList(vector<int> &triangles);
+	static void readTMeshFaceList(vector<int>&texturedTriangles);
 
 };

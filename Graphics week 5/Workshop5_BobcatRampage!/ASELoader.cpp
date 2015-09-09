@@ -362,7 +362,7 @@ void ASELoader::readMeshFaceList(vector<int> &triangles)
 	} while (currentLine.find("}") == string::npos);
 }
 
-void ASELoader::readTVertexList(vector<Vertex3> &vertices)
+void ASELoader::readTVertexList(vector<Vertex3> &textures)
 {
 	char line[255];
 	string currentLine = line;
@@ -387,7 +387,7 @@ void ASELoader::readTVertexList(vector<Vertex3> &vertices)
 			sscanf_s(currentLine.substr(displacement).c_str(), "%d\t%f\t%f\t%f", &i, &x, &y, &z);
 
 			newVertex.set(x, y, z);
-			vertices.push_back(newVertex);
+			textures.push_back(newVertex);
 		}
 		m_modelFile.getline(line, 255);
 		currentLine = line;
@@ -396,7 +396,7 @@ void ASELoader::readTVertexList(vector<Vertex3> &vertices)
 
 }
 
-void ASELoader::readTMeshFaceList(vector<int> &triangles)
+void ASELoader::readTMeshFaceList(vector<int> &texturedTriangles)
 {
 	char line[255];
 	string currentLine = line;
@@ -420,9 +420,9 @@ void ASELoader::readTMeshFaceList(vector<int> &triangles)
 			//sscanf(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
 			sscanf_s(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
 
-			triangles.push_back(a);
-			triangles.push_back(b);
-			triangles.push_back(c);
+			texturedTriangles.push_back(a);
+			texturedTriangles.push_back(b);
+			texturedTriangles.push_back(c);
 		}
 		m_modelFile.getline(line, 255);
 		currentLine = line;
