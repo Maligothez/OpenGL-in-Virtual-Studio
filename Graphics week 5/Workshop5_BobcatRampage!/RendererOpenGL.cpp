@@ -118,7 +118,7 @@ GLvoid RendererOpenGL::glPrint(const char *fmt, ...)
 }
 
 
-void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vector<Geometry> &things) // this does the drawing
+void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vector<Geometry> &things, vector<Geometry> &sky) // this does the drawing
 {	
 	float ExcavatorX = bigExcavator.getLocationX();
 	float ExcavatorZ = bigExcavator.getLocationZ();
@@ -181,14 +181,42 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 		glTranslatef(0  , 0 , -30 );
 		glRotatef(20, 1, 0, 0);
 		glRotatef(-angleAroundY, 0, 1, 0);
+
+		glEnable(GL_TEXTURE_2D);
+		glPushMatrix();
+		glScalef(100, 100, 100);
+		for (vector<Geometry>::iterator skyGeometry = sky.begin();
+			skyGeometry<sky.end(); skyGeometry++)
+		{
+			skyGeometry->drawOpenGLImmediate();
+		}
+		glPopMatrix();
+		glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (drawover the skybox)
+			// enable texture mapping
+			glDisable(GL_TEXTURE_2D);
 	
 		glTranslatef(-ExcavatorX, -10, -ExcavatorZ);
+
 	}
 	//camera false
 	else {
 		
 		glRotatef(cameraAngle, 1, 0, 0);
 		glTranslatef(0, -cameraHeight, -cameraDistance);
+
+		glEnable(GL_TEXTURE_2D);
+		glPushMatrix();
+		glScalef(100, 100, 100);
+		for (vector<Geometry>::iterator skyGeometry = sky.begin();
+			skyGeometry<sky.end(); skyGeometry++)
+		{
+			skyGeometry->drawOpenGLImmediate();
+		}
+		glPopMatrix();
+		glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (drawover the skybox)
+		// enable texture mapping
+		glDisable(GL_TEXTURE_2D);
+
 	}
 
 

@@ -49,7 +49,7 @@ public: // class member variables and methods following 'public:' are public - c
 	void initialise(); // set up the OpenGL state machine with desired settings (eg. enable texture mapping etc..)
 	void ResizeCanvas(long widthRequest, long heightRequest); // re-size glViewport (should be called by the window when it re-sizes) - also calls setupViewingFrustum
 	void setUpViewingFrustum(); // set the limits on the viewing volume (which part of the world gets shown on the monitor)
-	void Render(Excavator &bigExcavator, bool thirdPersonCamera, vector<Geometry> &things); // do the actual drawing
+	void Render(Excavator &bigExcavator, bool thirdPersonCamera, vector<Geometry> &things, vector<Geometry> &sky); // do the actual drawing
 
 	void RendererOpenGL::renderBox(GLfloat scale, GLuint northID, GLuint southID
 							   ,GLuint eastID, GLuint westID, GLuint topID, GLuint bottomID);

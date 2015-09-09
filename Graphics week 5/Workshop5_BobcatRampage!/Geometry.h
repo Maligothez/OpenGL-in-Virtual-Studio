@@ -19,6 +19,7 @@
 #include "ASELoader.h"
 #include "Vertex3.h"
 #include "Vector3.h"
+#include "TextureCreator.h"
 
 using namespace std;
 
@@ -51,8 +52,8 @@ private:
 	int mNumberOfVertices;
 	GLuint m_material;
 	string m_materialFile;
-	vector<Vertex3> textCoordinates;
-	vector<Vertex3> textindicies;
+	vector<Vertex3> m_textureCoordinates;
+	vector<int> m_textureIndices;
 
 
 
@@ -127,7 +128,7 @@ public:
 		return m_boundingSphereRadius;
 	}
 
-	void SetMaterial(string fileName) {
+	void setMaterial(string fileName) {
 		m_material = TextureCreator::loadTexture(fileName);
 	}
 
@@ -270,19 +271,35 @@ public:
 		computeBoundingSphere(Vector3f(0, 0, 0));
 	}
 
-	void setGeometry(vector<Vertex3>& vertices, vector<int>& triangles)
+	void setGeometry(vector<Vertex3>& vertices, vector<int>&
+		triangles, vector<Vertex3> &textureCoordinates, vector<int>
+		&textureIndices)
 	{
 		m_vertexCoordinates = vertices;
 		m_triangleIndices = triangles;
+		m_textureCoordinates = textureCoordinates;
+		m_textureIndices = textureIndices;
 		computeBoundingSphere(Vector3f(0, 0, 0));
 	}
 
 	void drawOpenGLImmediate()
 	{
+
+		if (!m_materialFile.empty())
+		{
+			if (!glIsTexture(m_material))
+			{
+				m_material = TextureCreator::loadTexture(m_materialFile);
+			}
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, m_material);
+		}
 		glPushMatrix();
 
 		// model to parent transform
 		glTranslatef(m_relativePosition.x(), m_relativePosition.y(), m_relativePosition.z()); // translation
+
+		
 
 		glRotatef(m_relativeOrientation.x(), 1, 0, 0); // Euler rotation
 		glRotatef(m_relativeOrientation.y(), 0, 1, 0);
@@ -298,8 +315,16 @@ public:
 		glBegin(GL_TRIANGLES);
 
 		for each (int i in m_triangleIndices)
+
 		{
+			if (m_material != NULL)
+			{
+				
+				glTexCoord2f(m_textureCoordinates[m_textureIndices[i]].x(),
+			   m_textureCoordinates[m_textureIndices[i]].y());
+			}
 			glVertex3fv(m_vertexCoordinates[i]);
+			
 		}
 
 		glEnd();
@@ -312,6 +337,8 @@ public:
 		}
 
 		glPopMatrix();
+
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	//creates vertex buffer

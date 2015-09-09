@@ -36,6 +36,286 @@ Modified: 11th August 2009 - Martin Masek - SCSS, Edith Cowan University
 using namespace std;
 
 
+void generateSkybox(vector<Geometry> &skyboxElements)
+{
+
+	// load skybox textures
+	//GLuint skyboxTexture[6];
+
+	Geometry currentSquare;
+	vector<Vertex3> vertices;
+	Vertex3 currentVertex;
+	vector<int> indices;
+	vector<Vertex3> textureCoordinates;
+	vector<int> textureIndices;
+
+	currentSquare.setColour(1, 1, 1);
+
+	currentSquare.setName((string)"north");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(-1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxN.bmp");
+
+	skyboxElements.push_back(currentSquare);
+
+
+	//  south square
+
+	currentSquare.setName((string)"south");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(-1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxS.bmp");
+
+	skyboxElements.push_back(currentSquare);
+
+
+	//  east square
+
+	currentSquare.setName((string)"east");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxE.bmp");
+
+	skyboxElements.push_back(currentSquare);
+
+
+	//  west square
+
+
+	currentSquare.setName((string)"west");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(-1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxW.bmp");
+
+	skyboxElements.push_back(currentSquare);
+
+	// draw top square
+
+	currentSquare.setName((string)"top");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(-1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, 1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxT.bmp");
+
+
+	skyboxElements.push_back(currentSquare);
+
+
+	//  bottom square
+
+	currentSquare.setName((string)"bottom");
+
+	// vertices	
+
+	vertices.clear();
+	currentVertex.set(-1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(-1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, -1.0f, 1.0f);
+	vertices.push_back(currentVertex);
+	currentVertex.set(1.0f, -1.0f, -1.0f);
+	vertices.push_back(currentVertex);
+
+	// triangles
+	indices.clear();
+	indices.push_back(0); indices.push_back(1); indices.push_back(2);
+	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+
+	// texture coordinates
+	textureCoordinates.clear();
+	currentVertex.set(0, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(0, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 0, 0);
+	textureCoordinates.push_back(currentVertex);
+	currentVertex.set(1, 1, 0);
+	textureCoordinates.push_back(currentVertex);
+
+	// texture triangles
+	textureIndices.clear();
+	textureIndices.push_back(0); textureIndices.push_back(1); textureIndices.push_back(2);
+	textureIndices.push_back(0); textureIndices.push_back(2); textureIndices.push_back(3);
+
+	currentSquare.setGeometry(vertices, indices, textureCoordinates, textureIndices);
+	currentSquare.setMaterial("skyboxB.bmp");
+
+	skyboxElements.push_back(currentSquare);
+
+
+
+}
+
+
 
 
 void generateMap(vector<Geometry> &worldThings)
@@ -51,6 +331,10 @@ void generateMap(vector<Geometry> &worldThings)
 	testThing.setName((string)"excavator");
 	testThing.setColour(0.5,0.5,0.5);
 	
+	
+
+
+
 	Geometry childGeometry;
 	childGeometry.loadGeometry("resources\\excavator\\wheel.ASE");
 	childGeometry.setName((string)"wheels");
@@ -223,6 +507,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 
 	Excavator bigExcavator(0.0f,0.0f,0.1f,0.0f,90.0f);
 
+	vector<Geometry> sky;
+	generateSkybox(sky);
+
 	vector<Geometry> worldThings;
 	generateMap(worldThings);
 	
@@ -252,7 +539,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 	bool thirdPersonCamera = false;
 
 	int gameState = PLAYING;
-	GLuint m_textureObject = TextureCreator::loadTexture("skyboxN.bmp");
+	//GLuint m_textureObject = TextureCreator::loadTexture("skyboxN.bmp");
 
 
 	bool exit = false;  // used to exit the game loop
@@ -440,7 +727,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 		}
 
 		// render the world
-		renderer->Render(bigExcavator, thirdPersonCamera, worldThings); // call the renderers 'Render' method (from the RendererOpenGL class)
+		renderer->Render(bigExcavator, thirdPersonCamera, worldThings, sky); // call the renderers 'Render' method (from the RendererOpenGL class)
 
 		
 	}
