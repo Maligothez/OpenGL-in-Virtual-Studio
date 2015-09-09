@@ -54,6 +54,9 @@ private:
 	
 	vector<Vertex3> m_textureCoordinates;
 	vector<int> m_textureIndices;
+
+	//GLuint m_bufferVertList;
+	GLuint m_bufferTriList;
 	
 
 
@@ -357,54 +360,150 @@ public:
 	//creates vertex buffer
 	void createOpenGLVertexBufferObject()
 	{
+		//
+		// Need to go from two arrays of indices (one for vertices, one for textures)
+		// to a single index array with each index for a texture and vertex coordinate
+		// this means expanding the array
+		//
 
-		glGenBuffers(1, &mBufferVertList);
+		vector<Vertex3> expandedVertices;
+		vector<Vertex3> expandedTextures;
+		vector<int> expandedIndices;
+		expandedVertices.clear(); expandedTextures.clear(); expandedIndices.clear();
+		int numberOfAddedVertices = 0;
+		bool insertingNew = true;
 
-		// make the buffer object current as an array buffer (used to store vertex data)
-		glBindBuffer(GL_ARRAY_BUFFER, mBufferVertList);
-		// reserve some space in memory for the vertex data
-		glBufferData(GL_ARRAY_BUFFER, mNumberOfVertices*sizeof(GLfloat)*(3 + 0 + 3), NULL, GL_STATIC_DRAW);
-
-		// maps bufer to main memory
-		GLfloat *vertBuff = (GLfloat *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-		int vertIndex = 0;
-		//vertex coordinates and colours or the buffer
-		for each (int i in m_triangleIndices)
+		// loop through the existing indices
+		for (int i = 0; i<m_triangleIndices.size(); i++)
 		{
-			vertBuff[vertIndex++] = m_vertexCoordinates[i].x();
-			vertBuff[vertIndex++] = m_vertexCoordinates[i].y();
-			vertBuff[vertIndex++] = m_vertexCoordinates[i].z();
-			vertBuff[vertIndex++] = m_colour.x();
-			vertBuff[vertIndex++] = m_colour.y();
-			vertBuff[vertIndex++] = m_colour.z();
+			// check if the vertex/texture pair is already inserted in the new list
+			for (int j = 0; j<numberOfAddedVertices; j++)
+			{
+				// check the vertex coordinate
+				if (m_vertexCoordinates[m_triangleIndices[i]] == expandedVertices[j])
+				{
+					if (!m_textureIndices.empty()) // if the model has textures, check them
+					{
+						if (m_textureCoordinates[m_textureIndices[i]] == expandedTextures[j])
+						{
+							// yes, this combination already exists, merely point to it
+							expandedIndices.push_back(j);
+							insertingNew = false;
+							break; // breaks out of the inner for loop
+						}
+					}
+					else
+					{
+						// yes, this combination already exists, merely point to it
+						expandedIndices.push_back(j);
+						insertingNew = false;
+						break; // breaks out of the inner for loop
+					}
+				}
+			}
+			if (insertingNew)
+			{
+				// if we are here it means there was no match, so insert the vertex and texture coordinates, and point to it
+				expandedVertices.push_back(m_vertexCoordinates[m_triangleIndices[i]]);
+				if (!m_textureCoordinates.empty())
+				{
+					expandedTextures.push_back(m_textureCoordinates[m_textureIndices[i]]);
+				}
+				expandedIndices.push_back(numberOfAddedVertices);
+				numberOfAddedVertices++;
+			}
+			else
+			{
+				insertingNew = true;
+			}
+
 		}
 
-		// unmap the buffer
+		m_vertexCoordinates = expandedVertices;
+		m_triangleIndices = expandedIndices;
+		if (!m_textureIndices.empty())
+		{
+			m_textureCoordinates = expandedTextures;
+		}
+
+
+		// *****************************
+		// Create the vertex buffer
+		// *****************************
+
+		// get a buffer ID
+		glGenBuffers(1, &mBufferVertList);
+		// make the buffer current
+		glBindBuffer(GL_ARRAY_BUFFER, mBufferVertList);
+		// make space for the data
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)* 3 * m_vertexCoordinates.size() + sizeof(GLfloat)* 2 * m_textureCoordinates.size(), NULL, GL_STATIC_DRAW);
+
+		// map the buffer to main memory
+		GLfloat *vertBuff = (GLfloat *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+
+		// copy data into buffer
+
+		// vertices
+		int currentIndex = 0;
+		for each (Vertex3 currentVertex in m_vertexCoordinates)
+		{
+			vertBuff[currentIndex] = currentVertex.x();
+			vertBuff[currentIndex + 1] = currentVertex.y();
+			vertBuff[currentIndex + 2] = currentVertex.z();
+			currentIndex += 3;
+		}
+		// texture coordinates
+		if (!m_textureIndices.empty())
+		{
+			for each (Vertex3 currentTexture in m_textureCoordinates)
+			{
+				vertBuff[currentIndex] = currentTexture.x();
+				vertBuff[currentIndex + 1] = currentTexture.y();
+				currentIndex += 2;
+			}
+		}
+
+		// unmap the bufffer
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
 
-		// Each vertex has 3 components, is a GLfloat, stride is 0 (dont have to jump over memory to get to the next vertex)
-		// and the vertices begin at the beginning of the buffer - (float *)NULL
-		glVertexPointer(3, GL_FLOAT, 24, (float *)NULL);
+		// *****************************
+		// Create the index buffer
+		// *****************************
 
-		// the colours begin after the vertices, so from the start of the buffer
-		// jump forward by numberOfVertices*3 (because each vertex has 3 components)
-		glColorPointer(3, GL_FLOAT, 24, (float *)NULL + 3);
+		// get a buffer ID
+		glGenBuffers(1, &m_bufferTriList);
+		// make the buffer current
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferTriList);
+		// make space for the data
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* m_triangleIndices.size(), NULL, GL_STATIC_DRAW);
+
+		// map the buffer to main memory
+		GLuint *triBuff = (GLuint *)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+
+		// copy data into buffer
+		currentIndex = 0;
+		for each (int currentTriangleIndex in m_triangleIndices)
+		{
+			triBuff[currentIndex] = currentTriangleIndex;
+			currentIndex += 1;
+		}
+
+		// unmap the bufffer
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
 	}
 
-	
-	
 	void drawOpenGLVertexBufferObject()
-
 	{
-		mNumberOfVertices = m_triangleIndices.size();
-		if (!glIsBuffer(mBufferVertList))
+		// check that the buffer exists
+		if (mBufferVertList == NULL)
 		{
 			createOpenGLVertexBufferObject();
 		}
-		// buffer is valid, recreates if not
+
 		glPushMatrix();
+
 		// model to parent transform
 		glTranslatef(m_relativePosition.x(), m_relativePosition.y(), m_relativePosition.z()); // translation
 
@@ -412,29 +511,59 @@ public:
 		glRotatef(m_relativeOrientation.y(), 0, 1, 0);
 		glRotatef(m_relativeOrientation.z(), 0, 0, 1);
 
-		// make the buffer current
+		// end of model to parent transform
+
+		// set the geometry colour
+		glColor3f(m_colour.x(), m_colour.y(), m_colour.z());
+
+		// draw this geometry
+
+		// make the buffers current
 		glBindBuffer(GL_ARRAY_BUFFER, mBufferVertList);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferTriList);
 
-		// enable vertex coordinates
+		// enable the drawing of vertex positions
 		glEnableClientState(GL_VERTEX_ARRAY);
-		// enable colours
-		glEnableClientState(GL_COLOR_ARRAY);
+		// point to the vertex data
+		glVertexPointer(3, GL_FLOAT, 0, (float *)NULL);
 
-		glVertexPointer(3, GL_FLOAT, 24, (float *)NULL);
-
-		glColorPointer(3, GL_FLOAT, 24, (float *)NULL + 3);
-
-		// draw all the vertices, connected up as triangles
-		glDrawArrays(GL_TRIANGLES, 0, mNumberOfVertices);
-		
-		for each (Geometry child in m_children)
+		// same for textures
+		if (!m_textureIndices.empty())
 		{
-			child.drawOpenGLVertexBufferObject();
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glTexCoordPointer(2, GL_FLOAT, 0, (float *)NULL + (m_vertexCoordinates.size() * 3));
+		}
+
+
+		// activate the geometry texture
+
+		if (!m_materialFile.empty())
+		{
+			if (!glIsTexture(m_material))
+			{
+				m_material = TextureCreator::loadTexture(m_materialFile); // error???
+			}
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, m_material);
+		}
+
+
+		// draw using the buffer data
+		glDrawElements(GL_TRIANGLES, m_triangleIndices.size(), GL_UNSIGNED_INT, 0);
+
+		glDisable(GL_TEXTURE_2D);
+
+
+		// now draw the kids
+		for (vector<Geometry>::iterator child = m_children.begin(); child<m_children.end(); child++)
+		{
+			child->drawOpenGLVertexBufferObject();
 		}
 
 		glPopMatrix();
 	}
-	
+
+
 };
 
 #endif

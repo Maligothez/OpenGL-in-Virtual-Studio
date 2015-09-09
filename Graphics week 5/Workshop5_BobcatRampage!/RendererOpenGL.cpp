@@ -210,7 +210,8 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 		for (vector<Geometry>::iterator skyGeometry = sky.begin();
 			skyGeometry<sky.end(); skyGeometry++)
 		{
-			skyGeometry->drawOpenGLImmediate();
+			//skyGeometry->drawOpenGLImmediate();
+			skyGeometry->drawOpenGLVertexBufferObject();
 		}
 		glPopMatrix();
 		glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (drawover the skybox)
@@ -246,8 +247,8 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 	// draw the Geometrys
 	for each (Geometry currentThing in things)
 	{
-		currentThing.drawOpenGLImmediate();
-		//currentThing.drawOpenGLVertexBufferObject();
+	//	currentThing.drawOpenGLImmediate();
+		currentThing.drawOpenGLVertexBufferObject();
 	}
 
 	SwapBuffers(hDC);
