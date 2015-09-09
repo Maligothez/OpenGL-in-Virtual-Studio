@@ -246,8 +246,8 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 	// draw the Geometrys
 	for each (Geometry currentThing in things)
 	{
-		//currentThing.drawOpenGLImmediate();
-		currentThing.drawOpenGLVertexBufferObject();
+		currentThing.drawOpenGLImmediate();
+		//currentThing.drawOpenGLVertexBufferObject();
 	}
 
 	SwapBuffers(hDC);

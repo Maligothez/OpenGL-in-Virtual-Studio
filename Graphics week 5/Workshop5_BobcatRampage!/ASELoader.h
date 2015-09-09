@@ -26,6 +26,13 @@ public:
 	static void loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles, string &textureFile, string fileName);
 
 private:
+
+	static void ASELoader::readMaterial(string &textureFile);
+
+	static void ASELoader::readMap(string &textureFile);
+
+	static void ASELoader::readTextureFile(string &textureFile);
+
 	static void readGeometry(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles);
 
 	static void readMesh(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles);

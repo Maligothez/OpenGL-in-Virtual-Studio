@@ -31,6 +31,7 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vec
 			if (currentLine.find("*MATERIAL_LIST")!= string::npos)
 			{
 				// read materials....
+				readMaterial(textureFile);
 			}
 			else if (currentLine.find("*GEOMOBJECT")!= string::npos) 
 			{
@@ -69,6 +70,127 @@ void ASELoader::loadModel(vector<Vertex3> &vertices, vector<int> &triangles, vec
 		m_modelFile.close();
 	}
 }
+
+void ASELoader::readMaterial(string &textureFile)
+{
+	char line[255];
+	string currentLine = line;
+
+	// read the file until we come to a close bracket
+	m_modelFile.getline(line, 255);
+	currentLine = line;
+	do
+	{
+
+		if (currentLine.find("*MATERIAL ") != string::npos)
+		{
+			readMap(textureFile);
+		}
+		else
+		{
+			// possible to exdend to handle other blocks
+			// read an unknown object...
+			// if the line of the unknown line contains an open curly
+			// bracket, skip to after the next close curly bracket.
+			if (currentLine.find("{") != string::npos)
+			{
+				do
+				{
+					m_modelFile.getline(line, 255);
+					currentLine = line;
+				} while (currentLine.find("}") == string::npos);
+			}
+		}
+		m_modelFile.getline(line, 255);
+		currentLine = line;
+
+	} while (currentLine.find("}") == string::npos);
+}
+
+
+void ASELoader::readMap(string &textureFile)
+{
+	char line[255];
+	string currentLine = line;
+
+	// read the file until we come to a close bracket
+	m_modelFile.getline(line, 255);
+	currentLine = line;
+	do
+	{
+
+		if (currentLine.find("*MAP_DIFFUSE ") != string::npos)
+		{
+			// read name of image file to use for texture
+			readTextureFile(textureFile);
+		}
+		else
+		{
+			// possible to exdend to handle other blocks
+			// read an unknown object...
+			// if the line of the unknown line contains an open curly
+			// bracket, skip to after the next close curly bracket.
+			if (currentLine.find("{") != string::npos)
+			{
+				do
+				{
+					m_modelFile.getline(line, 255);
+					currentLine = line;
+				} while (currentLine.find("}") == string::npos);
+			}
+		}
+		m_modelFile.getline(line, 255);
+		currentLine = line;
+
+	} while (currentLine.find("}") == string::npos);
+}
+
+
+void ASELoader::readTextureFile(string &textureFile)
+{
+	char line[255];
+	string currentLine = line;
+
+	// read the file until we come to a close bracket
+	m_modelFile.getline(line, 255);
+	currentLine = line;
+	do
+	{
+
+		if (currentLine.find("*BITMAP ") != string::npos)
+		{
+			// read name of image file to use for texture
+			int displacement = (int)currentLine.find("*BITMAP ") + 8;
+			textureFile = currentLine.substr(displacement);
+			// strip " " from the file name
+			int index;
+			index = textureFile.find_first_of("\"");
+			textureFile.erase(index, 1);
+			index = textureFile.find_last_of("\"");
+			textureFile.erase(index, 1);
+		}
+		else
+		{
+			// possible to exdend to handle other blocks
+			// read an unknown object...
+			// if the line of the unknown line contains an open curly
+			// bracket, skip to after the next close curly bracket.
+			if (currentLine.find("{") != string::npos)
+			{
+				do
+				{
+					m_modelFile.getline(line, 255);
+					currentLine = line;
+				} while (currentLine.find("}") == string::npos);
+			}
+		}
+		m_modelFile.getline(line, 255);
+		currentLine = line;
+
+	} while (currentLine.find("}") == string::npos);
+}
+
+
 
 void ASELoader::readGeometry(vector<Vertex3> &vertices, vector<int> &triangles, vector<Vertex3> &textures, vector<int> &texturedTriangles)
 {
