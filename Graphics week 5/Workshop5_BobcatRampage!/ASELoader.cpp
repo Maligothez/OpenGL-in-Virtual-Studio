@@ -261,7 +261,7 @@ void ASELoader::readMesh(vector<Vertex3> &vertices, vector<int> &triangles, vect
 			// read the actual faces...
 			readMeshFaceList(triangles);
 		}
-		else if (currentLine.find("*MESH_TVERTLISTT") != string::npos)
+		else if (currentLine.find("*MESH_TVERTLIST") != string::npos)
 		{
 			// read the actual faces...
 			readTVertexList(textures);
@@ -381,12 +381,12 @@ void ASELoader::readTVertexList(vector<Vertex3> &textures)
 			// this line in the .ASE file is of the form (eg.):
 			// *MESH_VERTEX    0	-20.1053	-18.7514	0.0000
 
-			int displacement = (int)currentLine.find("*MESH_TVERT ") + 13;
+			int displacement = (int)currentLine.find("*MESH_TVERT ") + 12;
 
 			//sscanf(currentLine.substr(displacement).c_str(), "%d\t%f\t%f\t%f", &i, &x, &y, &z);
 			sscanf_s(currentLine.substr(displacement).c_str(), "%d\t%f\t%f\t%f", &i, &x, &y, &z);
 
-			newVertex.set(x, y, z);
+			newVertex.set(x, 1-y, z);
 			textures.push_back(newVertex);
 		}
 		m_modelFile.getline(line, 255);
@@ -413,13 +413,12 @@ void ASELoader::readTMeshFaceList(vector<int> &texturedTriangles)
 			// this line is of the form (eg.):
 			// *MESH_FACE    0:    A:    0 B:    2 C:    3 AB:    1 BC:    1 CA:    0	 *MESH_SMOOTHING 2 	*MESH_MTLID 
 
-			int displacement = (int)currentLine.find("*MESH_TFACE ") + 11;
+			int displacement = (int)currentLine.find("*MESH_TFACE ") + 12;
 			// just read the A,B,C indices of the triangle (ignore the other stuff for now)
 			string test1 = currentLine.substr(displacement);
 			const char* tempString = test1.c_str();
 			//sscanf(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
-			sscanf_s(tempString, "%d: A: %d B: %d C: %d", &i, &a, &b, &c);
-
+			sscanf_s(tempString, "%d\t%d\t%d\t%d", &i, &a, &b, &c);
 			texturedTriangles.push_back(a);
 			texturedTriangles.push_back(b);
 			texturedTriangles.push_back(c);
