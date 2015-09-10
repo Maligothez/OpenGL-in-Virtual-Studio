@@ -577,6 +577,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 					{
 						if (j->isColiding(i->getPosition(),i->getBoundingSphereRadius()))
 						{
+							if (j->hasVBO())
+							{
+								j->clearVBO();
+							}
 							j->loadGeometry("resources\\houseRubble.ASE");
 							j->setName((string)"rubble");
 						}

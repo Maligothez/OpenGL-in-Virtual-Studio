@@ -101,6 +101,22 @@ public:
 	}
 
 
+	bool hasVBO()
+	{
+		if (mBufferVertList != NULL)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	void clearVBO()
+	{
+		glDeleteBuffers(1, &mBufferVertList);
+		mBufferVertList = NULL;
+		glDeleteBuffers(1, &m_bufferTriList);
+		m_bufferTriList = NULL;
+	}
 	float getBoundingSphereRadius()
 	{
 		return m_boundingSphereRadius;

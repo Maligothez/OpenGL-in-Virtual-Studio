@@ -188,7 +188,7 @@ void RendererOpenGL::Render(Excavator &bigExcavator, bool thirdPersonCamera, vec
 		for (vector<Geometry>::iterator skyGeometry = sky.begin();
 			skyGeometry<sky.end(); skyGeometry++)
 		{
-			skyGeometry->drawOpenGLImmediate();
+			skyGeometry->drawOpenGLVertexBufferObject();
 		}
 		glPopMatrix();
 		glClear(GL_DEPTH_BUFFER_BIT); // clear the depth buffer (drawover the skybox)
