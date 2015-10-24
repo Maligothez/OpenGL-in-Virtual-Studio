@@ -212,9 +212,10 @@ private:
 						if (current->isColiding(j->getPosition(), j->getBoundingSphereRadius()))
 						{
 
-							float sheepPushForceLength = sheepPushVector.length();							
-							sheepPushVector = (1/sheepPushForceLength)*sheepPushVector; // normalize to get direction only
-
+							float sheepPushForceLength = sheepPushVector.length();		
+							if (sheepPushForceLength != 0) {
+								sheepPushVector = (1 / sheepPushForceLength)*sheepPushVector; // normalize to get direction only
+							}
 							// scale force so its greater closer to the sheep
 							float pushMaxForceLength = 50;
 							sheepPushForceLength = max(0, (pushMaxForceLength-sheepPushForceLength));
@@ -240,7 +241,8 @@ private:
 
 							if (j->isColiding(current->getPosition(), current->getBoundingSphereRadius()+BOBCATRANGE))
 							{
-								float excavatorLength = excavatorVector.length();							
+								float excavatorLength = excavatorVector.length();			
+								
 								excavatorVector = (1/excavatorLength)*excavatorVector; // normalize to get direction only
 
 
@@ -299,9 +301,10 @@ private:
 				sheepAverage = Vector3f(sheepTotal.x()/averageCount, sheepTotal.y()/averageCount, sheepTotal.z()/averageCount);
 
 				sheepCohesionForce = sheepAverage - current->getPosition();
-				float sheepCohesionForceLength = sheepCohesionForce.length();							
-				sheepCohesionForce = (1/sheepCohesionForceLength)*sheepCohesionForce; // normalize to get direction only
-
+				float sheepCohesionForceLength = sheepCohesionForce.length();		
+				if (sheepCohesionForceLength != 0) {
+					sheepCohesionForce = (1 / sheepCohesionForceLength)*sheepCohesionForce; // normalize to get direction only
+				}
 							// scale force so its greater closer to the sheep
 							float cohesionMaxForceLength = 50;
 							sheepCohesionForceLength = max(0, (cohesionMaxForceLength-sheepCohesionForceLength));
