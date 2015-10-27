@@ -63,9 +63,70 @@ bool Excavator::checkCollisions(vector<Geometry> &things)
 	return true;
 }
 
+void bulletShoot(float locationX, float altitudeY, float locationZ, vector<Geometry> &worldThings)
+{
+	Geometry bullet;
+	bullet.setName((string)"bullet");
+	bullet.loadGeometry("resources\\sheep\\sheep.ASE");
+	bullet.setColour(1.0f, 1.0f, 1.0f);
+	bullet.setPosition(Vector3f(locationX, altitudeY, locationZ), "bullet");
+	worldThings.push_back(bullet);
+
+	Vector3f heading(0, 0, 0); // this is the vector that must be set
+
+	Vector3f newPosition = bullet.getPosition();
+
+	// current orientation of he sheep (only interested in rotation around y-axis)
+	//Vector3f orientation = bullet.getAngle();
+	//float angleAroundY = orientation.y();
+	//if (heading.length() != 0)
+//	{
+	//	heading = (1 / heading.length())*heading; // normalize heading
+	//}
+	
+	//float desiredAngleAroundY = (180 / (float)pi)*acos(heading.x()); // get the angle in degrees (acos works in radians)
+	
+	// adjust for the quadrant we are in (acos is only good between 0 and 180 degrees)				
+	//if (heading.z() > 0)
+	//{
+		//desiredAngleAroundY = 360 - desiredAngleAroundY;
+	//}
+	//float turningDirection = desiredAngleAroundY - angleAroundY;
+
+	//if (turningDirection > 180)
+	//{
+		//turningDirection = turningDirection - 360;
+	//}
+	//if (turningDirection < -180)
+	//{
+		//turningDirection = turningDirection + 360;
+	//}
+
+	// set the new angle based on a turning speed
+	//float turningSpeed = 0.1f;
+	//angleAroundY += turningSpeed*turningDirection;
+	//orientation.set(orientation.x(), angleAroundY, orientation.z());
+	//bullet.setAngle(orientation, (string)"bullet");
+
+	// ********************
+	// move the sheep forward
+	// ********************
+
+	//float movementSpeed = 1;
+	//float xIncrement = movementSpeed*(float)sin(pi*((-90 + angleAroundY) / 180.0));
+	//float zIncrement = movementSpeed*(float)cos(pi*((-90 + angleAroundY) / 180.0));
+	//heading.set(-xIncrement, 0, -zIncrement);
+	//newPosition += heading;
+	//bullet.setPosition(newPosition, (string)"bullet");
+	//if (_isnan(newPosition.x()))
+	//{
+		//float aa = newPosition.x();
+
+	//}
+}
 
 
-bool Excavator::processKeyboardInput()
+bool Excavator::processKeyboardInput(vector<Geometry> &worldThings)
 {	
 	bool gameWon = 0;
 	static float oldTime = (float)timeGetTime();
@@ -255,15 +316,14 @@ bool Excavator::processKeyboardInput()
 	}
 	if (GetAsyncKeyState(VK_LCONTROL) < 0)
 	{
-		Geometry bullet;
-		bullet.setName((string)"bullet");
-		bullet.loadGeometry("resources\\sheep\\sheep.ASE");
-		bullet.setColour(1.0f, 1.0f, 1.0f);
-		bullet.setPosition(Vector3f(locationX, altitudeY, locationZ), "bullet");
-		push_back(bullet);
+
+		bulletShoot(locationX, altitudeY, locationZ, worldThings);
 
 	}
 
 	return gameWon;
 
 }
+
+
+

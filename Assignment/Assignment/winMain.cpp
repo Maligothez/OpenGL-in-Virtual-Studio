@@ -621,7 +621,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpComdLin
 		// After processing messages, update our game 'state' and render.
 
 
-		bool status = bigExcavator.processKeyboardInput();
+		bool status = bigExcavator.processKeyboardInput(worldThings);
 
 		// update the game
 		GameController::runGameLogic(worldThings);

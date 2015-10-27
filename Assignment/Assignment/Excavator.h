@@ -25,7 +25,7 @@ public:
 	const bool getFPSMode();
 	const float getSpeed();
 
-	bool processKeyboardInput(); //vector<staticGameObject> &objects);
+	bool processKeyboardInput(vector<Geometry> &worldThings); //vector<staticGameObject> &objects);
 	bool checkCollisions(vector<Geometry> &things);
 private:
 	float movementSpeed;
